@@ -5,5 +5,5 @@ env:
     - VERSION=1.23
     - VERSION=1.22
 script:
-  - docker-tool.sh build $VERSION
-  - docker-tool.sh test $VERSION
+  - ./docker-tool.sh build $VERSION
+  - ./docker-tool.sh test $VERSION
