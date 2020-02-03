@@ -38,8 +38,15 @@ test_docker_image() {
      docker run -d --name "$1" -p 9998:9998 apache/tika:"$1"
      sleep 10
      curl http://localhost:9998/version
-     docker kill "$1"
-     docker rm "$1"
+     if [ $? -eq 0 ]
+     then
+      docker kill "$1"
+      docker rm "$1"
+     else
+      docker kill "$1"
+      docker rm "$1"
+      exit 1
+     fi
 }
 
 shift $((OPTIND -1))
@@ -55,14 +62,15 @@ case "$subcommand" in
     ;;
 
   test)
-    # Test minimal image
+    # Test the images
     test_docker_image ${version}
-    # Test full image
     test_docker_image "${version}-full"
     ;;
 
   publish)
-    echo "Does nothing until we get Docker Hub access setup under Apache Organisation"
+    # Push the build images
+    docker push apache/tika:${version}
+    docker push apache/tika:${version}-full
     ;;
 
 esac
