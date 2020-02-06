@@ -78,4 +78,12 @@ case "$subcommand" in
     docker push apache/tika:${version}-full
     ;;
 
+  latest)
+    # Update the latest tags to point to supplied version
+    docker tag apache/tika:${version} apache/tika:latest
+    docker push apache/tika:latest
+    docker tag apache/tika:${version}-full apache/tika:latest-full
+    docker push apache/tika:latest-full
+    ;;
+
 esac
