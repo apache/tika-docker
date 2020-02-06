@@ -34,15 +34,20 @@ while getopts ":h" opt; do
   esac
 done
 
+
 test_docker_image() {
      docker run -d --name "$1" -p 9998:9998 apache/tika:"$1"
      sleep 10
-     curl http://localhost:9998/version
-     if [ $? -eq 0 ]
+     url=http://localhost:9998/version
+     status=$(curl --head --location --connect-timeout 5 --write-out %{http_code} --silent --output /dev/null ${url})
+
+     if [[ $status == '200' ]]
      then
+      echo "$(tput setaf 2)Image: apache/tika:${1} - Passed$(tput sgr0)"
       docker kill "$1"
       docker rm "$1"
      else
+      echo "$(tput setaf 1)Image: apache/tika:${1} - Failed$(tput sgr0)"
       docker kill "$1"
       docker rm "$1"
       exit 1
