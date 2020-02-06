@@ -13,10 +13,13 @@ FROM ubuntu:bionic as base
 RUN apt-get update
 
 FROM base as dependencies
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install openjdk-11-jre-headless
+ARG JRE='openjdk-11-jre-headless'
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE
 
 FROM dependencies as fetch_tika
 ARG TIKA_VERSION
+ARG CHECK_SIG=true
 
 ENV NEAREST_TIKA_SERVER_URL="https://www.apache.org/dyn/closer.cgi/tika/tika-server-${TIKA_VERSION}.jar?filename=tika/tika-server-${TIKA_VERSION}.jar&action=download" \
     ARCHIVE_TIKA_SERVER_URL="https://archive.apache.org/dist/tika/tika-server-${TIKA_VERSION}.jar" \
@@ -31,8 +34,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install gnupg2 wget \
     && sh -c "[ -f /tika-server-${TIKA_VERSION}.jar ]" || exit 1 \
     && wget -t 10 --max-redirect 1 --retry-connrefused $DEFAULT_TIKA_SERVER_ASC_URL -O /tika-server-${TIKA_VERSION}.jar.asc  || rm /tika-server-${TIKA_VERSION}.jar.asc \
     && sh -c "[ -f /tika-server-${TIKA_VERSION}.jar.asc ]" || wget $ARCHIVE_TIKA_SERVER_ASC_URL -O /tika-server-${TIKA_VERSION}.jar.asc || rm /tika-server-${TIKA_VERSION}.jar.asc \
-    && sh -c "[ -f /tika-server-${TIKA_VERSION}.jar.asc ]" || exit 1 \
-    && gpg --verify /tika-server-${TIKA_VERSION}.jar.asc /tika-server-${TIKA_VERSION}.jar
+    && sh -c "[ -f /tika-server-${TIKA_VERSION}.jar.asc ]" || exit 1;
+
+RUN if [ "$CHECK_SIG" = "true" ] ; then gpg --verify /tika-server-${TIKA_VERSION}.jar.asc /tika-server-${TIKA_VERSION}.jar; fi
 
 FROM dependencies as runtime
 RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
