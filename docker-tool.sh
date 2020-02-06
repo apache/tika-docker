@@ -22,9 +22,10 @@ while getopts ":h" opt; do
     h )
       echo "Usage:"
       echo "    docker-tool.sh -h                      Display this help message."
-      echo "    docker-tool.sh build <TIKA_VERSION>    Builds image(s) for <TIKA_VERSION>."
-      echo "    docker-tool.sh test <TIKA_VERSION>     Tests image(s) for <TIKA_VERSION>."
-      echo "    docker-tool.sh publish <TIKA_VERSION>  Publishes image(s) for <TIKA_VERSION> to Docker Hub."
+      echo "    docker-tool.sh build <TIKA_VERSION>    Builds images for <TIKA_VERSION>."
+      echo "    docker-tool.sh test <TIKA_VERSION>     Tests images for <TIKA_VERSION>."
+      echo "    docker-tool.sh publish <TIKA_VERSION>  Publishes images for <TIKA_VERSION> to Docker Hub."
+      echo "    docker-tool.sh latest <TIKA_VERSION>   Tags images for <TIKA_VERSION> as latest on Docker Hub."
       exit 0
       ;;
    \? )
