@@ -13,17 +13,28 @@ There is a minimal version, which contains only Apache Tika and it's core depend
 
 To install more languages simply update the apt-get command to include the package containing the language you required, or include your own custom packs using an ADD command.
 
+## Available Tags
+
+Below are the most recent tags:
+
+- `latest`, `1.23`: Apache Tika Server 1.23 (Minimal)
+- `latest-full`, `1.23-full`: Apache Tika Server 1.23 (Full)
+- `1.22`: Apache Tika Server 1.22 (Minimal)
+- `1.22-full`: Apache Tika Server 1.22 (Full)
+
+You can see a full set of tags for historical versions [here](https://hub.docker.com/r/apache/tika/tags?page=1&ordering=last_updated).
+
 ## Usage
 
 You can pull down the version you would like using:
 
-    docker pull apache/tika:<version>
+    docker pull apache/tika:<tag>
 
 Then to run the container, execute the following command:
 
-    docker run -d -p 9998:9998 apache/tika:<version>
+    docker run -d -p 9998:9998 apache/tika:<tag>
 
-Where <version> is the Apache Tika Server version - e.g. 1.23, 1.22, 1.23-full, 1.22-full.
+Where <tag> is the DockerHub tag corresponding to the Apache Tika Server version - e.g. 1.23, 1.22, 1.23-full, 1.22-full.
 
 NOTE: The latest and latest-full tags are explicitly set to the latest released version when they are published.
 
