@@ -1,6 +1,6 @@
 # tika-docker [![Build Status](https://travis-ci.org/apache/tika-docker.svg?branch=master)](https://travis-ci.org/apache/tika-docker)
 
-This repo is used to create convenience Docker images published on [DockerHub](https://hub.docker.com/r/apache/tika) by the [Apache Tika](http://tika.apache.org) Dev team for Apache Tika Server.
+This repo is used to create convenience Docker images for Apache Tika Server published as [apache/tika](https://hub.docker.com/r/apache/tika) on DockerHub by the [Apache Tika](http://tika.apache.org) Dev team
 
 The images create a functional Apache Tika Server instance that contains the latest Ubuntu running the appropriate version's server on Port 9998 using Java 8 (until version 1.20) and then Java 11 (1.21 and above).
 
@@ -58,7 +58,20 @@ There have been a range of [contributors](https://github.com/apache/tika-docker/
 - [@mpdude](https://github.com/mpdude)
 - [@laszlocsontosuw](https://github.com/laszlocsontosuw)
 
+## Licence
 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 
 ## Disclaimer
 
 It is worth noting that whilst these Docker images download the binary JARs published by the Apache Tika Team on the Apache Software Foundation distribution sites, only the source release of an Apache Software Foundation project is an official release artefact. See [Release Distribution Policy](https://www.apache.org/dev/release-distribution.html) for more details.
