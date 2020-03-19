@@ -2,6 +2,7 @@ language: bash
 services: docker
 env:
   matrix:
+    - VERSION=1.24
     - VERSION=1.23
     - VERSION=1.22
 script:
