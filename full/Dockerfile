@@ -27,12 +27,12 @@ ARG CHECK_SIG=true
 
 ENV NEAREST_TIKA_SERVER_URL="https://www.apache.org/dyn/closer.cgi/tika/tika-server-${TIKA_VERSION}.jar?filename=tika/tika-server-${TIKA_VERSION}.jar&action=download" \
     ARCHIVE_TIKA_SERVER_URL="https://archive.apache.org/dist/tika/tika-server-${TIKA_VERSION}.jar" \
-    DEFAULT_TIKA_SERVER_ASC_URL="https://www.apache.org/dist/tika/tika-server-${TIKA_VERSION}.jar.asc" \
+    DEFAULT_TIKA_SERVER_ASC_URL="https://downloads.apache.org/tika/tika-server-${TIKA_VERSION}.jar.asc" \
     ARCHIVE_TIKA_SERVER_ASC_URL="https://archive.apache.org/dist/tika/tika-server-${TIKA_VERSION}.jar.asc" \
     TIKA_VERSION=$TIKA_VERSION
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install gnupg2 wget \
-    && wget -t 10 --max-redirect 1 --retry-connrefused -qO- https://www.apache.org/dist/tika/KEYS | gpg --import \
+    && wget -t 10 --max-redirect 1 --retry-connrefused -qO- https://downloads.apache.org/tika/KEYS | gpg --import \
     && wget -t 10 --max-redirect 1 --retry-connrefused $NEAREST_TIKA_SERVER_URL -O /tika-server-${TIKA_VERSION}.jar || rm /tika-server-${TIKA_VERSION}.jar \
     && sh -c "[ -f /tika-server-${TIKA_VERSION}.jar ]" || wget $ARCHIVE_TIKA_SERVER_URL -O /tika-server-${TIKA_VERSION}.jar || rm /tika-server-${TIKA_VERSION}.jar \
     && sh -c "[ -f /tika-server-${TIKA_VERSION}.jar ]" || exit 1 \
