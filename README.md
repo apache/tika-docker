@@ -17,8 +17,10 @@ To install more languages simply update the apt-get command to include the packa
 
 Below are the most recent tags:
 
-- `latest`, `1.24`: Apache Tika Server 1.24 (Minimal)
-- `latest-full`, `1.24-full`: Apache Tika Server 1.24 (Full)
+- `latest`, `1.24.1`: Apache Tika Server 1.24.1 (Minimal)
+- `latest-full`, `1.24.1-full`: Apache Tika Server 1.24.1 (Full)
+- `1.24`: Apache Tika Server 1.24 (Minimal)
+- `1.24-full`: Apache Tika Server 1.24 (Full)
 - `1.23`: Apache Tika Server 1.23 (Minimal)
 - `1.23-full`: Apache Tika Server 1.23 (Full)
 - `1.22`: Apache Tika Server 1.22 (Minimal)
