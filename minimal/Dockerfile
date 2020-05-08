@@ -9,11 +9,11 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
-FROM ubuntu:bionic as base
+FROM ubuntu:focal as base
 RUN apt-get update
 
 FROM base as dependencies
-ARG JRE='openjdk-11-jre-headless'
+ARG JRE='openjdk-14-jre-headless'
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE
 
