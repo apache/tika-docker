@@ -2,9 +2,9 @@ language: bash
 services: docker
 env:
   matrix:
+    - VERSION=1.25
     - VERSION=1.24.1
     - VERSION=1.24
-    - VERSION=1.23
 script:
   - ./docker-tool.sh build $VERSION
   - ./docker-tool.sh test $VERSION
