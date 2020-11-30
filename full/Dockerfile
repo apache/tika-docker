@@ -49,7 +49,7 @@ ENV TIKA_VERSION=$TIKA_VERSION
 COPY --from=fetch_tika /tika-server-${TIKA_VERSION}.jar /tika-server-${TIKA_VERSION}.jar
 
 EXPOSE 9998
-ENTRYPOINT java -jar /tika-server-${TIKA_VERSION}.jar -h 0.0.0.0
+ENTRYPOINT [ "/bin/sh", "-c", "exec java -jar /tika-server-${TIKA_VERSION}.jar -h 0.0.0.0 $0 $@"]
 
 LABEL maintainer="Apache Tika Developers dev@tika.apache.org"
 
