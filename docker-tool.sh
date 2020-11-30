@@ -62,9 +62,9 @@ version=$1; shift
 case "$subcommand" in
   build)
     # Build slim version with minimal dependencies
-    docker build -t apache/tika:${version} --build-arg TIKA_VERSION=${version} - < minimal/Dockerfile
+    docker build -t apache/tika:${version} --build-arg TIKA_VERSION=${version} - < minimal/Dockerfile --no-cache
     # Build full version with OCR, Fonts and GDAL
-    docker build -t apache/tika:${version}-full --build-arg TIKA_VERSION=${version} - < full/Dockerfile
+    docker build -t apache/tika:${version}-full --build-arg TIKA_VERSION=${version} - < full/Dockerfile --no-cache
     ;;
 
   test)
