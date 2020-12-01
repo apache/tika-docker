@@ -32,6 +32,8 @@ You can see a full set of tags for historical versions [here](https://hub.docker
 
 ## Usage
 
+### Default
+
 You can pull down the version you would like using:
 
     docker pull apache/tika:<tag>
@@ -43,6 +45,30 @@ Then to run the container, execute the following command:
 Where <tag> is the DockerHub tag corresponding to the Apache Tika Server version - e.g. 1.23, 1.22, 1.23-full, 1.22-full.
 
 NOTE: The latest and latest-full tags are explicitly set to the latest released version when they are published.
+
+### Custom Config
+
+From version 1.25 and 1.25-full of the image it is now easier to override the defaults and pass parameters to the running instance.
+
+So for example if you wish to disable the OCR parser in the full image you could write a custom configuration:
+
+```
+cat <<EOT >> tika-config.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+  <parsers>
+      <parser class="org.apache.tika.parser.DefaultParser">
+          <parser-exclude class="org.apache.tika.parser.ocr.TesseractOCRParser"/>
+      </parser>
+  </parsers>
+</properties>
+EOT
+```
+Then by mounting this custom configuration as a volume, you could pass the command line parameter to load it
+
+    docker run -d -p 9998:9998 -v `pwd`/tika-config.xml:/tika-config.xml apache/tika:1.25-full --config /tika-config.xml
+
+You can see more configuration examples [here](https://tika.apache.org/1.25/configuring.html).
 
 ## Building
 
