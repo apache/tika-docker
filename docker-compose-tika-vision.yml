@@ -26,9 +26,9 @@ services:
 
     volumes:
       # Replace the below with the configuration you want to use, or with your own custom one 
-      # -  ./sample-configs/inception-rest.xml:/tika-config.xml
-      # -  ./sample-configs/inception-rest-video.xml:/tika-config.xml
-      -  ./sample-configs/inception-rest-caption.xml:/tika-config.xml
+      # -  ./sample-configs/vision/inception-rest.xml:/tika-config.xml
+      # -  ./sample-configs/vision/inception-rest-video.xml:/tika-config.xml
+      -  ./sample-configs/vision/inception-rest-caption.xml:/tika-config.xml
    
     depends_on:
       # You can comment out any you don't need here and in the Vision Service section below
