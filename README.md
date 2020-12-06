@@ -70,6 +70,21 @@ Then by mounting this custom configuration as a volume, you could pass the comma
 
 You can see more configuration examples [here](https://tika.apache.org/1.25/configuring.html).
 
+### Docker Compose Examples
+
+There are a number of sample Docker Compose files included in the repos to allow you to test some different scenarios.
+
+These files use docker-compose 3.x series and include:
+
+* docker-compose-tika-vision.yml - TensorFlow Inception REST API Vision examples
+* docker-compose-tika-grobid.yml - Grobid REST parsing example
+* docker-compose-tika-customocr.yml - Tesseract OCR example with custom configuration
+* docker-compose-tika-ner.yml - Named Entity Recognition example
+
+The Docker Compose files and configurations (sourced from _sample-configs_ directory) all have comments in them so you can try different options, or use them as a base to create your own custom configuration.
+
+You can install docker-compose from [here](https://docs.docker.com/compose/install/).
+
 ## Building
 
 To build the image from scratch, simply invoke:
