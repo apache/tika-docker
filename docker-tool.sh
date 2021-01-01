@@ -22,12 +22,13 @@ while getopts ":h" opt; do
     h )
       echo "Usage:"
       echo "    docker-tool.sh -h                                              Display this help message."
-      echo "    docker-tool.sh build <TIKA_VERSION> ['<TESSERACT_LANGUAGES>']  Builds images for <TIKA_VERSION> via special [<TESSERACT_LANGUAGES>]."
+      echo "    docker-tool.sh build <TIKA_VERSION> [<TESSERACT_LANGUAGES>]    Builds images for <TIKA_VERSION> via special [<TESSERACT_LANGUAGES>]."
       echo "    docker-tool.sh test <TIKA_VERSION>                             Tests images for <TIKA_VERSION>."
       echo "    docker-tool.sh publish <TIKA_VERSION>                          Publishes images for <TIKA_VERSION> to Docker Hub."
       echo "    docker-tool.sh latest <TIKA_VERSION>                           Tags images for <TIKA_VERSION> as latest on Docker Hub."
       echo ""
-      ecgi "Note: [<TESSERACT_LANGUAGES>] is optional for full image, if you want to change default `tesseract-ocr` installation languages."
+      echo "Note: [<TESSERACT_LANGUAGES>] is optional for full image,"
+      echo "      for change default tesseract-ocr packages."
       exit 0
       ;;
    \? )
@@ -60,7 +61,7 @@ test_docker_image() {
 shift $((OPTIND -1))
 subcommand=$1; shift
 version=$1; shift
-tesseract_languages=$1; shift
+tesseract_languages=$@
 
 case "$subcommand" in
   build)
