@@ -17,16 +17,16 @@ To install more languages simply update the apt-get command to include the packa
 
 Below are the most recent tags:
 
-- `latest`, `1.25`: Apache Tika Server 1.25 (Minimal)
-- `latest-full`, `1.25-full`: Apache Tika Server 1.25 (Full)
+- `latest`, `1.26`: Apache Tika Server 1.25 (Minimal)
+- `latest-full`, `1.26-full`: Apache Tika Server 1.25 (Full)
+- `1.26`: Apache Tika Server 1.26 (Minimal)
+- `1.26-full`: Apache Tika Server 1.26 (Full)
 - `1.25`: Apache Tika Server 1.25 (Minimal)
 - `1.25-full`: Apache Tika Server 1.25 (Full)
 - `1.24.1`: Apache Tika Server 1.24.1 (Minimal)
 - `1.24.1-full`: Apache Tika Server 1.24.1 (Full)
 - `1.24`: Apache Tika Server 1.24 (Minimal)
 - `1.24-full`: Apache Tika Server 1.24 (Full)
-- `1.23`: Apache Tika Server 1.23 (Minimal)
-- `1.23-full`: Apache Tika Server 1.23 (Full)
 
 You can see a full set of tags for historical versions [here](https://hub.docker.com/r/apache/tika/tags?page=1&ordering=last_updated).
 
@@ -68,7 +68,7 @@ Then by mounting this custom configuration as a volume, you could pass the comma
 
     docker run -d -p 9998:9998 -v `pwd`/tika-config.xml:/tika-config.xml apache/tika:1.25-full --config /tika-config.xml
 
-You can see more configuration examples [here](https://tika.apache.org/1.25/configuring.html).
+You can see more configuration examples [here](https://tika.apache.org/1.26/configuring.html).
 
 ### Docker Compose Examples
 
