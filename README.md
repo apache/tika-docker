@@ -95,7 +95,7 @@ You can then use the following command (using the name you allocated in the buil
     
 ## More Information
 
-For more infomation on Apache Tika Server, go to the [Apache Tika Server documentation](http://wiki.apache.org/tika/TikaJAXRS).
+For more infomation on Apache Tika Server, go to the [Apache Tika Server documentation](https://cwiki.apache.org/confluence/display/TIKA/TikaServer).
 
 For more information on Apache Tika, go to the official [Apache Tika](http://tika.apache.org) project website.
 
