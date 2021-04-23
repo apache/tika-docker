@@ -1,3 +1,4 @@
+
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
@@ -14,7 +15,8 @@ RUN apt-get update
 
 FROM base as dependencies
 ARG JRE='openjdk-14-jre-headless'
-
+# "random" uid/gid hopefully not used anywhere else
+ARG UID_GID="35002:35002"
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE
 
 FROM dependencies as fetch_tika
@@ -43,7 +45,7 @@ RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ARG TIKA_VERSION
 ENV TIKA_VERSION=$TIKA_VERSION
 COPY --from=fetch_tika /tika-server-${TIKA_VERSION}.jar /tika-server-${TIKA_VERSION}.jar
-
+USER $UID_GID
 EXPOSE 9998
 ENTRYPOINT [ "/bin/sh", "-c", "exec java -jar /tika-server-${TIKA_VERSION}.jar -h 0.0.0.0 $0 $@"]
 

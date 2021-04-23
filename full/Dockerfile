@@ -14,6 +14,8 @@ RUN apt-get update
 
 FROM base as dependencies
 ARG JRE='openjdk-14-jre-headless'
+# "random" uid/gid hopefully not used anywhere else
+ARG UID_GID="35002:35002"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE gdal-bin tesseract-ocr \
         tesseract-ocr-eng tesseract-ocr-ita tesseract-ocr-fra tesseract-ocr-spa tesseract-ocr-deu
@@ -47,7 +49,7 @@ RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ARG TIKA_VERSION
 ENV TIKA_VERSION=$TIKA_VERSION
 COPY --from=fetch_tika /tika-server-${TIKA_VERSION}.jar /tika-server-${TIKA_VERSION}.jar
-
+USER $UID_GID
 EXPOSE 9998
 ENTRYPOINT [ "/bin/sh", "-c", "exec java -jar /tika-server-${TIKA_VERSION}.jar -h 0.0.0.0 $0 $@"]
 
