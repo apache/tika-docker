@@ -18,7 +18,7 @@ services:
  
   ## Apache Tika Server 
   tika:
-    image: apache/tika:1.25-full
+    image: apache/tika:${TAG}-full
     # Use custom script as entrypoint to go fetch models and setup recognisers
     entrypoint: [ "/ner/run_tika_server.sh"]
     restart: on-failure

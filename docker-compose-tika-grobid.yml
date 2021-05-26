@@ -18,9 +18,9 @@ services:
  
   ## Apache Tika Server 
   tika:
-    image: apache/tika:1.25-full
+    image: apache/tika:${TAG}-full
     # Override default so we can add configuration on classpath
-    entrypoint: [ "/bin/sh", "-c", "exec java -cp /grobid:/tika-server-1.25.jar org.apache.tika.server.TikaServerCli -h 0.0.0.0 $$0 $$@"]
+    entrypoint: [ "/bin/sh", "-c", "exec java -cp /grobid:/tika-server-${TAG}.jar org.apache.tika.server.TikaServerCli -h 0.0.0.0 $$0 $$@"]
     # Kept command as example but could be added to entrypoint too
     command: -c /grobid/tika-config.xml
     restart: on-failure
