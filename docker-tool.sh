@@ -21,11 +21,11 @@ while getopts ":h" opt; do
   case ${opt} in
     h )
       echo "Usage:"
-      echo "    docker-tool.sh -h                                              Display this help message."
-      echo "    docker-tool.sh build <TIKA_VERSION> [<TESSERACT_LANGUAGES>]    Builds images for <TIKA_VERSION> via special [<TESSERACT_LANGUAGES>]."
-      echo "    docker-tool.sh test <TIKA_VERSION>                             Tests images for <TIKA_VERSION>."
-      echo "    docker-tool.sh publish <TIKA_VERSION>                          Publishes images for <TIKA_VERSION> to Docker Hub."
-      echo "    docker-tool.sh latest <TIKA_VERSION>                           Tags images for <TIKA_VERSION> as latest on Docker Hub."
+      echo "    docker-tool.sh -h                                            Display this help message."
+      echo "    docker-tool.sh build <TIKA_VERSION> [<TESSERACT_LANGUAGES>]  Builds images for <TIKA_VERSION> via special [<TESSERACT_LANGUAGES>]."
+      echo "    docker-tool.sh test <TIKA_VERSION>                           Tests images for <TIKA_VERSION>."
+      echo "    docker-tool.sh publish <TIKA_VERSION>                        Publishes images for <TIKA_VERSION> to Docker Hub."
+      echo "    docker-tool.sh latest <TIKA_VERSION>                         Tags images for <TIKA_VERSION> as latest on Docker Hub."
       echo ""
       echo "Note: [<TESSERACT_LANGUAGES>] is optional for full image,"
       echo "      to customize various tesseract-ocr packages. Otherwise the default packages are installed."
@@ -64,14 +64,19 @@ version=$1; shift
 jar=$1; shift
 tesseract_languages=$@
 
+if [ -z "$jar" ]
+then
+  jar="tika-server"
+fi
+
 case "$subcommand" in
   build)
-    build_args="--build-arg TIKA_VERSION=${version}"
+    build_args="--build-arg TIKA_VERSION=${version} --build-arg TIKA_JAR_NAME=${jar}"
     if [[ ! -z "$tesseract_languages" ]]; then
       build_args="$build_args --build-arg TESSERACT_LANGUAGES='${tesseract_languages}'"
     fi
     # Build slim version with minimal dependencies
-    docker build -t apache/tika:${version} --build-arg TIKA_VERSION=${version} - < minimal/Dockerfile --no-cache
+    docker build -t apache/tika:${version} ${build_args} - < minimal/Dockerfile --no-cache
     # Build full version with OCR, Fonts and GDAL
     docker build -t apache/tika:${version}-full ${build_args} - < full/Dockerfile --no-cache
     ;;
