@@ -26,6 +26,11 @@ Below are the most recent tags:
 - `1.24`: Apache Tika Server 1.24 (Minimal)
 - `1.24-full`: Apache Tika Server 1.24 (Full)
 
+Additionally, as the team work towards the release of Apache Tika Server 2.0.0 beta releases will be made to allow for easy testing:
+
+- `2.0.0-BETA`: Apache Tika Server 2.0.0-BETA (Minimal)
+- `2.0.0-BETA-full`: Apache Tika Server 2.0.0-BETA (Full)
+
 You can see a full set of tags for historical versions [here](https://hub.docker.com/r/apache/tika/tags?page=1&ordering=last_updated).
 
 ## Usage
