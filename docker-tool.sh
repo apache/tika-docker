@@ -61,6 +61,7 @@ test_docker_image() {
 shift $((OPTIND -1))
 subcommand=$1; shift
 version=$1; shift
+jar=$1; shift
 tesseract_languages=$@
 
 case "$subcommand" in
