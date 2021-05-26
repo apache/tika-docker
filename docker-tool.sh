@@ -28,7 +28,7 @@ while getopts ":h" opt; do
       echo "    docker-tool.sh latest <TIKA_VERSION>                           Tags images for <TIKA_VERSION> as latest on Docker Hub."
       echo ""
       echo "Note: [<TESSERACT_LANGUAGES>] is optional for full image,"
-      echo "      for change default tesseract-ocr packages."
+      echo "      to customize various tesseract-ocr packages. Otherwise the default packages are installed."
       exit 0
       ;;
    \? )

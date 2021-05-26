@@ -13,7 +13,7 @@ There is a minimal version, which contains only Apache Tika and it's core depend
 
 To install more languages simply use `docker-build.sh` or manually using [docker --build-arg](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg)
 
-For see with version is supported by tesseract on official package:
+Obtain a list of official Tesseract packages by executing (on Linux):
 
     apt-cache search --names-only '^tesseract-ocr-[a-z]{3}$'
 
