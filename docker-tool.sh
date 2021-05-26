@@ -75,8 +75,6 @@ case "$subcommand" in
     if [[ ! -z "$tesseract_languages" ]]; then
       build_args="$build_args --build-arg TESSERACT_LANGUAGES='${tesseract_languages}'"
     fi
-    echo $build_args
-    exit
     # Build slim version with minimal dependencies
     docker build -t apache/tika:${version} ${build_args} - < minimal/Dockerfile --no-cache
     # Build full version with OCR, Fonts and GDAL
