@@ -86,6 +86,8 @@ These files use docker-compose 3.x series and include:
 
 The Docker Compose files and configurations (sourced from _sample-configs_ directory) all have comments in them so you can try different options, or use them as a base to create your own custom configuration.
 
+**N.B.** You will want to create a environment variable (used in some bash scripts) matching the version of tika-docker you want to work with in the docker compositions e.g. `export TAG=1.26`. Similarly you should also consult `.env` which is used in the docker-compose `.yml` files.
+
 You can install docker-compose from [here](https://docs.docker.com/compose/install/).
 
 ## Building
