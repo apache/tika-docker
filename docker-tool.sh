@@ -76,7 +76,7 @@ case "$subcommand" in
       build_args="$build_args --build-arg TESSERACT_LANGUAGES='${tesseract_languages}'"
     fi
     # Build slim version with minimal dependencies
-    # eval "docker build -t apache/tika:${version} ${build_args} - < minimal/Dockerfile --no-cache"
+    eval "docker build -t apache/tika:${version} ${build_args} - < minimal/Dockerfile --no-cache"
     # Build full version with OCR, Fonts and GDAL
     eval "docker build -t apache/tika:${version}-full ${build_args} - < full/Dockerfile"
     ;;
