@@ -78,7 +78,7 @@ case "$subcommand" in
     # Build slim version with minimal dependencies
     eval "docker build -t apache/tika:${version} ${build_args} - < minimal/Dockerfile --no-cache"
     # Build full version with OCR, Fonts and GDAL
-    eval "docker build -t apache/tika:${version}-full ${build_args} - < full/Dockerfile"
+    eval "docker build -t apache/tika:${version}-full ${build_args} - < full/Dockerfile --no-cache"
     ;;
 
   test)
