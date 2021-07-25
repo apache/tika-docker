@@ -11,7 +11,11 @@ There is a minimal version, which contains only Apache Tika and it's core depend
 * Italian
 * Spanish.
 
-To install more languages simply update the apt-get command to include the package containing the language you required, or include your own custom packs using an ADD command.
+To install more languages simply use `docker-build.sh` or manually using [docker --build-arg](https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables---build-arg)
+
+Obtain a list of official Tesseract packages by executing (on Linux):
+
+    apt-cache search --names-only '^tesseract-ocr-[a-z]{3}$'
 
 ## Available Tags
 
