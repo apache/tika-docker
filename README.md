@@ -2,7 +2,7 @@
 
 This repo is used to create convenience Docker images for Apache Tika Server published as [apache/tika](https://hub.docker.com/r/apache/tika) on DockerHub by the [Apache Tika](http://tika.apache.org) Dev team
 
-The images create a functional Apache Tika Server instance that contains the latest Ubuntu running the appropriate version's server on Port 9998 using Java 8 (until version 1.20), Java 11 (1.21 and 1.24.1) and Java 14 for newer versions.
+The images create a functional Apache Tika Server instance that contains the latest Ubuntu running the appropriate version's server on Port 9998 using Java 8 (until version 1.20), Java 11 (1.21 and 1.24.1), Java 14 (until 2.1.0), and Java 16 for newer versions.
 
 There is a minimal version, which contains only Apache Tika and it's core dependencies, and a full version, which also includes dependencies for the GDAL and Tesseract OCR parsers. To balance showing functionality versus the size of the full image, this file currently installs the language packs for the following languages:
 * English
@@ -28,6 +28,8 @@ Below are the most recent 1.x series tags:
 
 Below are the most recent 2.x series tags:
 
+- `2.1.0`: Apache Tika Server 2.1.0 (Minimal)
+- `2.1.0-full`: Apache Tika Server 2.1.0 (Full)
 - `2.0.0`: Apache Tika Server 2.0.0 (Minimal)
 - `2.0.0-full`: Apache Tika Server 2.0.0 (Full)
 
