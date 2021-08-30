@@ -13,7 +13,7 @@ FROM ubuntu:focal as base
 RUN apt-get update
 
 FROM base as dependencies
-ARG JRE='openjdk-14-jre-headless'
+ARG JRE='openjdk-16-jre-headless'
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE gdal-bin tesseract-ocr \
         tesseract-ocr-eng tesseract-ocr-ita tesseract-ocr-fra tesseract-ocr-spa tesseract-ocr-deu
