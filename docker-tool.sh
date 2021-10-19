@@ -58,13 +58,20 @@ test_docker_image() {
 shift $((OPTIND -1))
 subcommand=$1; shift
 version=$1; shift
+jar=$1; shift
+
+if [ -z "$jar" ]
+then
+  jar="tika-server"
+fi
+
 
 case "$subcommand" in
   build)
     # Build slim version with minimal dependencies
-    docker build -t apache/tika:${version} --build-arg TIKA_VERSION=${version} - < minimal/Dockerfile --no-cache
+    docker build -t apache/tika:${version} --build-arg TIKA_VERSION=${version} --build-arg TIKA_JAR_NAME=${jar} - < minimal/Dockerfile --no-cache
     # Build full version with OCR, Fonts and GDAL
-    docker build -t apache/tika:${version}-full --build-arg TIKA_VERSION=${version} - < full/Dockerfile --no-cache
+    docker build -t apache/tika:${version}-full --build-arg TIKA_VERSION=${version} --build-arg TIKA_JAR_NAME=${jar} - < full/Dockerfile --no-cache
     ;;
 
   test)

@@ -1,8 +1,8 @@
-# tika-docker [![Build Status](https://travis-ci.org/apache/tika-docker.svg?branch=master)](https://travis-ci.org/apache/tika-docker)
+# tika-docker [![Build Status](https://api.travis-ci.com/apache/tika-docker.svg?branch=master)](https://travis-ci.com/github/apache/tika-docker)
 
 This repo is used to create convenience Docker images for Apache Tika Server published as [apache/tika](https://hub.docker.com/r/apache/tika) on DockerHub by the [Apache Tika](http://tika.apache.org) Dev team
 
-The images create a functional Apache Tika Server instance that contains the latest Ubuntu running the appropriate version's server on Port 9998 using Java 8 (until version 1.20), Java 11 (1.21 and 1.24.1) and Java 14 for newer versions.
+The images create a functional Apache Tika Server instance that contains the latest Ubuntu running the appropriate version's server on Port 9998 using Java 8 (until version 1.20), Java 11 (1.21 and 1.24.1), Java 14 (until 1.27/2.0.0), and Java 16 for newer versions.
 
 There is a minimal version, which contains only Apache Tika and it's core dependencies, and a full version, which also includes dependencies for the GDAL and Tesseract OCR parsers. To balance showing functionality versus the size of the full image, this file currently installs the language packs for the following languages:
 * English
@@ -15,16 +15,23 @@ To install more languages simply update the apt-get command to include the packa
 
 ## Available Tags
 
-Below are the most recent tags:
+Below are the most recent 1.x series tags:
 
-- `latest`, `1.26`: Apache Tika Server 1.26 (Minimal)
-- `latest-full`, `1.26-full`: Apache Tika Server 1.26 (Full)
+- `latest`, `1.27`: Apache Tika Server 1.27 (Minimal)
+- `latest-full`, `1.27-full`: Apache Tika Server 1.27 (Full)
+- `1.26`: Apache Tika Server 1.26 (Minimal)
+- `1.26-full`: Apache Tika Server 1.26 (Full)
 - `1.25`: Apache Tika Server 1.25 (Minimal)
 - `1.25-full`: Apache Tika Server 1.25 (Full)
 - `1.24.1`: Apache Tika Server 1.24.1 (Minimal)
 - `1.24.1-full`: Apache Tika Server 1.24.1 (Full)
-- `1.24`: Apache Tika Server 1.24 (Minimal)
-- `1.24-full`: Apache Tika Server 1.24 (Full)
+
+Below are the most recent 2.x series tags:
+
+- `2.1.0`: Apache Tika Server 2.1.0 (Minimal)
+- `2.1.0-full`: Apache Tika Server 2.1.0 (Full)
+- `2.0.0`: Apache Tika Server 2.0.0 (Minimal)
+- `2.0.0-full`: Apache Tika Server 2.0.0 (Full)
 
 You can see a full set of tags for historical versions [here](https://hub.docker.com/r/apache/tika/tags?page=1&ordering=last_updated).
 
@@ -80,6 +87,8 @@ These files use docker-compose 3.x series and include:
 * docker-compose-tika-ner.yml - Named Entity Recognition example
 
 The Docker Compose files and configurations (sourced from _sample-configs_ directory) all have comments in them so you can try different options, or use them as a base to create your own custom configuration.
+
+**N.B.** You will want to create a environment variable (used in some bash scripts) matching the version of tika-docker you want to work with in the docker compositions e.g. `export TAG=1.26`. Similarly you should also consult `.env` which is used in the docker-compose `.yml` files.
 
 You can install docker-compose from [here](https://docs.docker.com/compose/install/).
 
