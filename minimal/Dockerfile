@@ -13,7 +13,7 @@ FROM ubuntu:focal as base
 RUN apt-get update
 
 FROM base as dependencies
-ARG JRE='openjdk-16-jre-headless'
+ARG JRE='openjdk-17-jre-headless'
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE
 

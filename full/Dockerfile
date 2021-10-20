@@ -13,7 +13,7 @@ FROM ubuntu:focal as base
 RUN apt-get update
 
 FROM base as dependencies
-ARG JRE='openjdk-16-jre-headless'
+ARG JRE='openjdk-17-jre-headless'
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE gdal-bin tesseract-ocr \
         tesseract-ocr-eng tesseract-ocr-ita tesseract-ocr-fra tesseract-ocr-spa tesseract-ocr-deu
@@ -49,7 +49,6 @@ RUN if [ "$CHECK_SIG" = "true" ] ; then gpg --verify /${TIKA_JAR_NAME}-${TIKA_VE
 
 FROM dependencies as runtime
 RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-ARG TIKA_VERSION
 ARG TIKA_VERSION
 ENV TIKA_VERSION=$TIKA_VERSION
 ARG TIKA_JAR_NAME
