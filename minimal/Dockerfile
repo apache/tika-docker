@@ -1,3 +1,4 @@
+
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
@@ -13,6 +14,9 @@ FROM ubuntu:focal as base
 RUN apt-get update
 
 FROM base as dependencies
+
+# "random" uid/gid hopefully not used anywhere else
+ARG UID_GID="35002:35002"
 ARG JRE='openjdk-17-jre-headless'
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE
@@ -50,7 +54,6 @@ ENV TIKA_VERSION=$TIKA_VERSION
 ARG TIKA_JAR_NAME
 ENV TIKA_JAR_NAME=$TIKA_JAR_NAME
 COPY --from=fetch_tika /${TIKA_JAR_NAME}-${TIKA_VERSION}.jar /${TIKA_JAR_NAME}-${TIKA_VERSION}.jar
-
 USER $UID_GID
 EXPOSE 9998
 ENTRYPOINT [ "/bin/sh", "-c", "exec java -jar /${TIKA_JAR_NAME}-${TIKA_VERSION}.jar -h 0.0.0.0 $0 $@"]
