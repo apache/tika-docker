@@ -17,23 +17,23 @@ To install more languages simply update the apt-get command to include the packa
 
 Below are the most recent 1.x series tags:
 
-- `latest`, `1.27`: Apache Tika Server 1.27 (Minimal)
-- `latest-full`, `1.27-full`: Apache Tika Server 1.27 (Full)
+- `latest`, `1.28`: Apache Tika Server 1.28 (Minimal)
+- `latest-full`, `1.28-full`: Apache Tika Server 1.28 (Full)
+- `1.27`: Apache Tika Server 1.27 (Minimal)
+- `1.27-full`: Apache Tika Server 1.27 (Full)
 - `1.26`: Apache Tika Server 1.26 (Minimal)
 - `1.26-full`: Apache Tika Server 1.26 (Full)
 - `1.25`: Apache Tika Server 1.25 (Minimal)
 - `1.25-full`: Apache Tika Server 1.25 (Full)
-- `1.24.1`: Apache Tika Server 1.24.1 (Minimal)
-- `1.24.1-full`: Apache Tika Server 1.24.1 (Full)
 
 Below are the most recent 2.x series tags:
 
+- `2.2.1`: Apache Tika Server 2.2.0 (Minimal)
+- `2.2.1-full`: Apache Tika Server 2.2.1 (Full)
 - `2.2.0`: Apache Tika Server 2.2.0 (Minimal)
 - `2.2.0-full`: Apache Tika Server 2.2.0 (Full)
 - `2.1.0`: Apache Tika Server 2.1.0 (Minimal)
 - `2.1.0-full`: Apache Tika Server 2.1.0 (Full)
-- `2.0.0`: Apache Tika Server 2.0.0 (Minimal)
-- `2.0.0-full`: Apache Tika Server 2.0.0 (Full)
 
 You can see a full set of tags for historical versions [here](https://hub.docker.com/r/apache/tika/tags?page=1&ordering=last_updated).
 
