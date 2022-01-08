@@ -28,7 +28,7 @@ Below are the most recent 1.x series tags:
 
 Below are the most recent 2.x series tags:
 
-- `2.2.1`: Apache Tika Server 2.2.0 (Minimal)
+- `2.2.1`: Apache Tika Server 2.2.1 (Minimal)
 - `2.2.1-full`: Apache Tika Server 2.2.1 (Full)
 - `2.2.0`: Apache Tika Server 2.2.0 (Minimal)
 - `2.2.0-full`: Apache Tika Server 2.2.0 (Full)
