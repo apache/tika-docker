@@ -62,7 +62,7 @@ jar=$1; shift
 
 if [ -z "$jar" ]
 then
-  jar="tika-server"
+  jar="tika-server-standard"
 fi
 
 
