@@ -11,6 +11,10 @@
 # the License.
 FROM ubuntu:focal as base
 RUN apt-get update
+# tesseract 5 is not yet in the base repo
+RUN apt-get -y install software-properties-common
+RUN add-apt-repository -y ppa:alex-p/tesseract-ocr5
+
 
 FROM base as dependencies
 
