@@ -53,11 +53,17 @@ You can pull down the version you would like using:
 
 Then to run the container, execute the following command:
 
-    docker run -d -p 9998:9998 apache/tika:<tag>
+    docker run -d -p 127.0.0.1:9998:9998 apache/tika:<tag>
 
 Where <tag> is the DockerHub tag corresponding to the Apache Tika Server version - e.g. 1.23, 1.22, 1.23-full, 1.22-full.
 
 NOTE: The latest and latest-full tags are explicitly set to the latest released version when they are published.
+
+NOTE: In the example above, we recommend binding the server to localhost because Docker alters iptables and may expose
+your tika-server to the internet.  If you are confident that your tika-server is on an isolated network
+you can simply run:
+
+    docker run -d -p 9998:9998 apache/tika:<tag>
 
 ### Custom Config
 
@@ -79,7 +85,7 @@ EOT
 ```
 Then by mounting this custom configuration as a volume, you could pass the command line parameter to load it
 
-    docker run -d -p 9998:9998 -v `pwd`/tika-config.xml:/tika-config.xml apache/tika:1.25-full --config /tika-config.xml
+    docker run -d -p 127.0.0.1:9998:9998 -v `pwd`/tika-config.xml:/tika-config.xml apache/tika:1.25-full --config /tika-config.xml
 
 You can see more configuration examples [here](https://tika.apache.org/1.26/configuring.html).
 
@@ -108,7 +114,7 @@ To build the image from scratch, simply invoke:
    
 You can then use the following command (using the name you allocated in the build command as part of -t option):
 
-    docker run -d -p 9998:9998 apache/tika
+    docker run -d -p 127.0.0.1:9998:9998 apache/tika
     
 ## More Information
 
