@@ -30,16 +30,16 @@ Below are the most recent 2.x series tags:
 
 Below are the most recent 1.x series tags:
 
+- `1.28.5`: Apache Tika Server 1.28.5 (Minimal)
+- `1.28.5-full`: Apache Tika Server 1.28.5 (Full)
 - `1.28.4`: Apache Tika Server 1.28.4 (Minimal)
-- `1.28.4-full`: Apache Tika Server 1.28.2 (Full)
+- `1.28.4-full`: Apache Tika Server 1.28.4 (Full)
 - `1.28.3`: Apache Tika Server 1.28.3 (Minimal)
 - `1.28.3-full`: Apache Tika Server 1.28.3 (Full)
 - `1.28.2`: Apache Tika Server 1.28.2 (Minimal)
 - `1.28.2-full`: Apache Tika Server 1.28.2 (Full)
 - `1.28.1`: Apache Tika Server 1.28.1 (Minimal)
 - `1.28.1-full`: Apache Tika Server 1.28.1 (Full)
-- `1.28`: Apache Tika Server 1.28 (Minimal)
-- `1.28-full`: Apache Tika Server 1.28 (Full)
 
 You can see a full set of tags for historical versions [here](https://hub.docker.com/r/apache/tika/tags?page=1&ordering=last_updated).
 
