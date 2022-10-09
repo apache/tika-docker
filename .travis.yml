@@ -2,7 +2,7 @@ language: bash
 services: docker
 env:
   matrix:
-    - VERSION=2.4.1 TIKA_JAR=tika-server-standard
+    - VERSION=2.5.0 TIKA_JAR=tika-server-standard
     - VERSION=1.28.5 TIKA_JAR=tika-server
 
 script:
