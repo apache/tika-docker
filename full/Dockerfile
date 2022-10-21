@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 FROM ubuntu:jammy as base
-RUN apt-get update
+RUN apt-get update -y
 # tesseract 5 is not yet in the base repo
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository -y ppa:alex-p/tesseract-ocr5

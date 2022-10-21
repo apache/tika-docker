@@ -11,7 +11,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 FROM ubuntu:jammy as base
-RUN apt-get update
+RUN apt-get update -y
 
 FROM base as dependencies
 
