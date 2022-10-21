@@ -37,7 +37,7 @@ done
 
 
 test_docker_image() {
-     docker run -d --name "$1" -p 9998:9998 apache/tika:"$1"
+     docker run -d --name "$1" -p localhost:9998:9998 apache/tika:"$1"
      sleep 10
      url=http://localhost:9998/version
      status=$(curl --head --location --connect-timeout 5 --write-out %{http_code} --silent --output /dev/null ${url})
