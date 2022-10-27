@@ -22,10 +22,10 @@ while getopts ":h" opt; do
     h )
       echo "Usage:"
       echo "    docker-tool.sh -h                      Display this help message."
-      echo "    docker-tool.sh build <TIKA_VERSION>    Builds images for <TIKA_VERSION>."
-      echo "    docker-tool.sh test <TIKA_VERSION>     Tests images for <TIKA_VERSION>."
-      echo "    docker-tool.sh publish <TIKA_VERSION>  Publishes images for <TIKA_VERSION> to Docker Hub."
-      echo "    docker-tool.sh latest <TIKA_VERSION>   Tags images for <TIKA_VERSION> as latest on Docker Hub."
+      echo "    docker-tool.sh build <TIKA_DOCKER_VERSION> <TIKA_VERSION>   Builds <TIKA_DOCKER_VERSION> images for <TIKA_VERSION>."
+      echo "    docker-tool.sh test <TIKA_DOCKER_VERSION>     Tests images for <TIKA_DOCKER_VERSION>."
+      echo "    docker-tool.sh publish <TIKA_DOCKER_VERSION>  Publishes images for <TIKA_DOCKER_VERSION> to Docker Hub."
+      echo "    docker-tool.sh latest <TIKA_DOCKER_VERSION>   Tags images for <TIKA_DOCKER_VERSION> as latest on Docker Hub."
       exit 0
       ;;
    \? )
@@ -39,7 +39,7 @@ done
 test_docker_image() {
      docker run -d --name "$1" -p 127.0.0.1:9998:9998 apache/tika:"$1"
      sleep 10
-     url=http://localhost:9998/version
+     url=http://localhost:9998/
      status=$(curl --head --location --connect-timeout 5 --write-out %{http_code} --silent --output /dev/null ${url})
 
      if [[ $status == '200' ]]
@@ -57,7 +57,8 @@ test_docker_image() {
 
 shift $((OPTIND -1))
 subcommand=$1; shift
-version=$1; shift
+tika_docker_version=$1; shift
+tika_version=$1; shift
 jar=$1; shift
 
 if [ -z "$jar" ]
@@ -68,29 +69,29 @@ fi
 
 case "$subcommand" in
   build)
-    # Build slim version with minimal dependencies
-    docker build -t apache/tika:${version} --build-arg TIKA_VERSION=${version} --build-arg TIKA_JAR_NAME=${jar} - < minimal/Dockerfile --no-cache
-    # Build full version with OCR, Fonts and GDAL
-    docker build -t apache/tika:${version}-full --build-arg TIKA_VERSION=${version} --build-arg TIKA_JAR_NAME=${jar} - < full/Dockerfile --no-cache
+    # Build slim tika- with minimal dependencies
+    docker build -t apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} --build-arg TIKA_JAR_NAME=${jar} - < minimal/Dockerfile --no-cache
+    # Build full tika- with OCR, Fonts and GDAL
+    docker build -t apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} --build-arg TIKA_JAR_NAME=${jar} - < full/Dockerfile --no-cache
     ;;
 
   test)
     # Test the images
-    test_docker_image ${version}
-    test_docker_image "${version}-full"
+    test_docker_image ${tika_docker_version}
+    test_docker_image "${tika_docker_version}-full"
     ;;
 
   publish)
     # Push the build images
-    docker push apache/tika:${version}
-    docker push apache/tika:${version}-full
+    docker push apache/tika:${tika_docker_version}
+    docker push apache/tika:${tika--docker-}-full
     ;;
 
   latest)
-    # Update the latest tags to point to supplied version
-    docker tag apache/tika:${version} apache/tika:latest
+    # Update the latest tags to point to supplied tika-
+    docker tag apache/tika:${tika_docker_version} apache/tika:latest
     docker push apache/tika:latest
-    docker tag apache/tika:${version}-full apache/tika:latest-full
+    docker tag apache/tika:${tika_docker_version}-full apache/tika:latest-full
     docker push apache/tika:latest-full
     ;;
 
