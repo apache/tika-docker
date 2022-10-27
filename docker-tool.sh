@@ -78,7 +78,7 @@ case "$subcommand" in
   publish)
     # Push the build images
     docker push apache/tika:${tika_docker_version}
-    docker push apache/tika:${tika--docker-}-full
+    docker push apache/tika:${tika_docker_version}-full
     ;;
 
   latest)
