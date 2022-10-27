@@ -59,20 +59,14 @@ shift $((OPTIND -1))
 subcommand=$1; shift
 tika_docker_version=$1; shift
 tika_version=$1; shift
-jar=$1; shift
-
-if [ -z "$jar" ]
-then
-  jar="tika-server-standard"
-fi
 
 
 case "$subcommand" in
   build)
     # Build slim tika- with minimal dependencies
-    docker build -t apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} --build-arg TIKA_JAR_NAME=${jar} - < minimal/Dockerfile --no-cache
+    docker build -t apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} - < minimal/Dockerfile --no-cache
     # Build full tika- with OCR, Fonts and GDAL
-    docker build -t apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} --build-arg TIKA_JAR_NAME=${jar} - < full/Dockerfile --no-cache
+    docker build -t apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} - < full/Dockerfile --no-cache
     ;;
 
   test)

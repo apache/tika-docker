@@ -4,9 +4,8 @@ services: docker
 
 env:
   matrix:
-    - TIKA_DOCKER_VERSION=2.5.0.1 TIKA_VERSION=2.5.0 TIKA_JAR=tika-server-standard
-    - TIKA_DOCKER_VERSION=1.28.5.1 TIKA_VERSION=1.28.5 TIKA_JAR=tika-server
+    - TIKA_DOCKER_VERSION=2.5.0.1 TIKA_VERSION=2.5.0
 
 script:
-  - ./docker-tool.sh build $TIKA_DOCKER_VERSION $TIKA_VERSION $TIKA_JAR
-  - ./docker-tool.sh test $TIKA_DOCKER_VERSION $TIKA_VERSION $TIKA_JAR
+  - ./docker-tool.sh build $TIKA_DOCKER_VERSION $TIKA_VERSION
+  - ./docker-tool.sh test $TIKA_DOCKER_VERSION $TIKA_VERSION
