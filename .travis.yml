@@ -4,7 +4,7 @@ services: docker
 
 env:
   matrix:
-    - TIKA_DOCKER_VERSION=2.5.0.1 TIKA_VERSION=2.5.0
+    - TIKA_DOCKER_VERSION=2.5.0.2 TIKA_VERSION=2.5.0
 
 script:
   - ./docker-tool.sh build $TIKA_DOCKER_VERSION $TIKA_VERSION

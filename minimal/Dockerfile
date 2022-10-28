@@ -16,7 +16,8 @@ RUN apt-get update
 FROM base as dependencies
 
 # "random" uid/gid hopefully not used anywhere else
-ARG UID_GID="35002:35002"
+ARG UID_GID_DEFAULT="35002:35002"
+ENV UID_GID=$UID_GID_DEFAULT
 ARG JRE='openjdk-17-jre-headless'
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE

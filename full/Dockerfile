@@ -19,7 +19,8 @@ RUN add-apt-repository -y ppa:alex-p/tesseract-ocr5
 FROM base as dependencies
 
 # "random" uid/gid hopefully not used anywhere else
-ARG UID_GID="35002:35002"
+ARG UID_GID_DEFAULT="35002:35002"
+ENV UID_GID=$UID_GID_DEFAULT
 ARG JRE='openjdk-17-jre-headless'
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE gdal-bin tesseract-ocr \
@@ -65,6 +66,7 @@ ARG TIKA_VERSION
 ENV TIKA_VERSION=$TIKA_VERSION
 COPY --from=fetch_tika /tika-server-standard-${TIKA_VERSION}.jar /tika-server-standard-${TIKA_VERSION}.jar
 USER $UID_GID
+
 EXPOSE 9998
 ENTRYPOINT [ "/bin/sh", "-c", "exec java -jar /tika-server-standard-${TIKA_VERSION}.jar -h 0.0.0.0 $0 $@"]
 
