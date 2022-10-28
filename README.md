@@ -146,6 +146,7 @@ There have been a range of [contributors](https://github.com/apache/tika-docker/
 - [@arjunyel](https://github.com/arjunyel)
 - [@mpdude](https://github.com/mpdude)
 - [@laszlocsontosuw](https://github.com/laszlocsontosuw)
+- [@tallisonapache](https://github.com/tballison)
 
 ## Licence
 
