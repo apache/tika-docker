@@ -57,6 +57,6 @@ echo "EMAIL=(?:[a-z0-9!#$%&'*+/=?^_\`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_\`{|}~-]+)*
 # Can be a single implementation or comma seperated list for multiple for "ner.impl.class" property
 RECOGNISERS=org.apache.tika.parser.ner.opennlp.OpenNLPNERecogniser,org.apache.tika.parser.ner.regex.RegexNERecogniser
 # Set classpath to the Tika Server JAR and the /ner folder so it has the configuration and models from above
-CLASSPATH="/ner:/tika-bin/*"
+CLASSPATH="/ner:/tika-server-standard-${TIKA_VERSION}.jar:/tika-extras/*"
 # Run the server with the custom configuration ner.impl.class property and custom /ner/tika-config.xml
 exec java -Dner.impl.class=$RECOGNISERS -cp $CLASSPATH org.apache.tika.server.core.TikaServerCli -h 0.0.0.0 -c /ner/tika-config.xml

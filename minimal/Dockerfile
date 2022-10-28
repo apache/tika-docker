@@ -56,10 +56,9 @@ FROM dependencies as runtime
 RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ARG TIKA_VERSION
 ENV TIKA_VERSION=$TIKA_VERSION
-RUN mkdir /tika-bin
-COPY --from=fetch_tika /tika-server-standard-${TIKA_VERSION}.jar /tika-bin/tika-server-standard-${TIKA_VERSION}.jar
+COPY --from=fetch_tika /tika-server-standard-${TIKA_VERSION}.jar /tika-server-standard-${TIKA_VERSION}.jar
 USER $UID_GID
 EXPOSE 9998
-ENTRYPOINT [ "/bin/sh", "-c", "exec java -cp \"/tika-bin/*\" org.apache.tika.server.core.TikaServerCli -h 0.0.0.0 $0 $@"]
+ENTRYPOINT [ "/bin/sh", "-c", "exec java -cp \"/tika-server-standard-${TIKA_VERSION}.jar:/tika-extras/*\" org.apache.tika.server.core.TikaServerCli -h 0.0.0.0 $0 $@"]
 
 LABEL maintainer="Apache Tika Developers dev@tika.apache.org"
