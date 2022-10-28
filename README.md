@@ -90,12 +90,12 @@ Then by mounting this custom configuration as a volume, you could pass the comma
 
 You can see more configuration examples [here](https://tika.apache.org/2.5.0/configuring.html).
 
-As of 2.5.0.2, if you'd like to add extra jars from your local my-jars directory to Tika's classpath, mount to /tika-extras like so:
+As of 2.5.0.2, if you'd like to add extra jars from your local `my-jars` directory to Tika's classpath, mount to `/tika-extras` like so:
 
     docker run -d -p 127.0.0.1:9998:9998 -v `pwd`/my-jars:/tika-extras apache/tika:2.5.0.2-full
 
 You may want to do this to add optional components, such as the tika-eval metadata filter, or optional
-dependencies such as jai-imageio-jpeg2000 (check license compatibility first!)
+dependencies such as jai-imageio-jpeg2000 (check license compatibility first!).
 
 ### Docker Compose Examples
 
