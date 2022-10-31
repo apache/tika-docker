@@ -10,19 +10,26 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
+
+# "random" uid/gid hopefully not used anywhere else
+# This needs to be set globally and then referenced in
+# the subsequent stages -- see TIKA-3912
+ARG UID_GID="35002:35002"
+
 FROM ubuntu:jammy as base
 RUN apt-get update
 
 FROM base as dependencies
 
-# "random" uid/gid hopefully not used anywhere else
-ARG UID_GID_DEFAULT="35002:35002"
-ENV UID_GID=$UID_GID_DEFAULT
+# must reference uid_gid
+ARG UID_GID
 ARG JRE='openjdk-17-jre-headless'
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE
 
 FROM dependencies as fetch_tika
+# must reference uid_gid
+ARG UID_GID
 ARG TIKA_VERSION
 ARG CHECK_SIG=true
 
@@ -54,6 +61,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install gnupg2 wget \
 RUN if [ "$CHECK_SIG" = "true" ] ; then gpg --verify /tika-server-standard-${TIKA_VERSION}.jar.asc /tika-server-standard-${TIKA_VERSION}.jar; fi
 
 FROM dependencies as runtime
+# must reference uid_gid
+ARG UID_GID
 RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ARG TIKA_VERSION
 ENV TIKA_VERSION=$TIKA_VERSION
