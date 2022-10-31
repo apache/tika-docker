@@ -41,17 +41,29 @@ test_docker_image() {
      sleep 10
      url=http://localhost:9998/
      status=$(curl --head --location --connect-timeout 5 --write-out %{http_code} --silent --output /dev/null ${url})
+     user=$(docker inspect "$1" --format '{{.Config.User}}')
 
      if [[ $status == '200' ]]
      then
-      echo "$(tput setaf 2)Image: apache/tika:${1} - Passed$(tput sgr0)"
-      docker kill "$1"
-      docker rm "$1"
+      echo "$(tput setaf 2)Image: apache/tika:${1} - Basic test passed$(tput sgr0)"
      else
-      echo "$(tput setaf 1)Image: apache/tika:${1} - Failed$(tput sgr0)"
+      echo "$(tput setaf 1)Image: apache/tika:${1} - Basic test failed$(tput sgr0)"
       docker kill "$1"
       docker rm "$1"
       exit 1
+     fi
+
+     #now test that the user is correctly set
+     if [[ $user == '35002:35002' ]]
+      then
+       echo "$(tput setaf 2)Image: apache/tika:${1} - User passed$(tput sgr0)"
+       docker kill "$1"
+       docker rm "$1"
+      else
+       echo "$(tput setaf 1)Image: apache/tika:${1} - User failed$(tput sgr0)"
+        docker kill "$1"
+        docker rm "$1"
+        exit 1
      fi
 }
 
