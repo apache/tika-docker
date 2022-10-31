@@ -28,6 +28,3 @@ services:
       -  ./sample-configs/ner/:/ner/
     environment:
       - TAG
-      - TIKA_JAR
-      - TIKA_SERVER_CLASS
-   

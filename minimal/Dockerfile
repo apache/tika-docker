@@ -61,6 +61,6 @@ ENV TIKA_VERSION=$TIKA_VERSION
 COPY --from=fetch_tika /tika-server-standard-${TIKA_VERSION}.jar /tika-server-standard-${TIKA_VERSION}.jar
 USER $UID_GID
 EXPOSE 9998
-ENTRYPOINT [ "/bin/sh", "-c", "exec java -jar /tika-server-standard-${TIKA_VERSION}.jar -h 0.0.0.0 $0 $@"]
+ENTRYPOINT [ "/bin/sh", "-c", "exec java -cp \"/tika-server-standard-${TIKA_VERSION}.jar:/tika-extras/*\" org.apache.tika.server.core.TikaServerCli -h 0.0.0.0 $0 $@"]
 
 LABEL maintainer="Apache Tika Developers dev@tika.apache.org"

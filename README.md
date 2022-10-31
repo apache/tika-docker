@@ -16,9 +16,10 @@ To install more languages simply update the apt-get command to include the packa
 ## Available Tags
 
 Below are the most recent 2.x series tags:
-
-- `latest`, `2.5.0`: Apache Tika Server 2.5.0 (Minimal)
-- `latest-full`, `2.5.0-full`: Apache Tika Server 2.5.0 (Full)
+- `latest`, `2.5.0.1`: Apache Tika Server 2.5.0.1 (Minimal)
+- `latest-full`, `2.5.0.1-full`: Apache Tika Server 2.5.0.1 (Full)
+- `2.5.0`: Apache Tika Server 2.5.0 (Minimal)
+- `2.5.0-full`: Apache Tika Server 2.5.0 (Full)
 - `2.4.1`: Apache Tika Server 2.4.1 (Minimal)
 - `2.4.1-full`: Apache Tika Server 2.4.1 (Full)
 - `2.4.0`: Apache Tika Server 2.4.0 (Minimal)
@@ -85,9 +86,16 @@ EOT
 ```
 Then by mounting this custom configuration as a volume, you could pass the command line parameter to load it
 
-    docker run -d -p 127.0.0.1:9998:9998 -v `pwd`/tika-config.xml:/tika-config.xml apache/tika:1.25-full --config /tika-config.xml
+    docker run -d -p 127.0.0.1:9998:9998 -v `pwd`/tika-config.xml:/tika-config.xml apache/tika:2.5.0-full --config /tika-config.xml
 
-You can see more configuration examples [here](https://tika.apache.org/1.26/configuring.html).
+You can see more configuration examples [here](https://tika.apache.org/2.5.0/configuring.html).
+
+As of 2.5.0.2, if you'd like to add extra jars from your local `my-jars` directory to Tika's classpath, mount to `/tika-extras` like so:
+
+    docker run -d -p 127.0.0.1:9998:9998 -v `pwd`/my-jars:/tika-extras apache/tika:2.5.0.2-full
+
+You may want to do this to add optional components, such as the tika-eval metadata filter, or optional
+dependencies such as jai-imageio-jpeg2000 (check license compatibility first!).
 
 ### Docker Compose Examples
 
@@ -138,6 +146,7 @@ There have been a range of [contributors](https://github.com/apache/tika-docker/
 - [@arjunyel](https://github.com/arjunyel)
 - [@mpdude](https://github.com/mpdude)
 - [@laszlocsontosuw](https://github.com/laszlocsontosuw)
+- [@tallisonapache](https://github.com/tballison)
 
 ## Licence
 
