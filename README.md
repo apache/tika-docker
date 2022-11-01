@@ -16,8 +16,10 @@ To install more languages simply update the apt-get command to include the packa
 ## Available Tags
 
 Below are the most recent 2.x series tags:
-- `latest`, `2.5.0.1`: Apache Tika Server 2.5.0.1 (Minimal)
-- `latest-full`, `2.5.0.1-full`: Apache Tika Server 2.5.0.1 (Full)
+- `latest`, `2.5.0.2`: Apache Tika Server 2.5.0.2 (Minimal)
+- `latest-full`, `2.5.0.2-full`: Apache Tika Server 2.5.0.2 (Full)
+- `2.5.0.1`: Apache Tika Server 2.5.0.1 (Minimal)
+- `2.5.0.1-full`: Apache Tika Server 2.5.0.1 (Full)
 - `2.5.0`: Apache Tika Server 2.5.0 (Minimal)
 - `2.5.0-full`: Apache Tika Server 2.5.0 (Full)
 - `2.4.1`: Apache Tika Server 2.4.1 (Minimal)
@@ -29,7 +31,7 @@ Below are the most recent 2.x series tags:
 - `2.2.1`: Apache Tika Server 2.2.1 (Minimal)
 - `2.2.1-full`: Apache Tika Server 2.2.1 (Full)
 
-Below are the most recent 1.x series tags:
+Below are the most recent 1.x series tags. **Note** that as of 30 September 2022, the 1.x branch is no longer supported.
 
 - `1.28.5`: Apache Tika Server 1.28.5 (Minimal)
 - `1.28.5-full`: Apache Tika Server 1.28.5 (Full)
@@ -134,6 +136,10 @@ To meet up with others using Apache Tika, consider coming to one of the [Apache 
 
 For more information on the Apache Software Foundation, go to the [Apache Software Foundation](http://apache.org) website.
 
+For a full list of changes as of 2.5.0.1, visit [CHANGES.md](https://github.com/apache/tika-docker/CHANGES.md).
+
+For our current release process, visit [tika-docker Release Process](https://cwiki.apache.org/confluence/display/TIKA/Release+Process+for+tika-docker)
+
 ## Authors
 
 Apache Tika Dev Team (dev@tika.apache.org)
@@ -148,7 +154,7 @@ There have been a range of [contributors](https://github.com/apache/tika-docker/
 - [@laszlocsontosuw](https://github.com/laszlocsontosuw)
 - [@tallisonapache](https://github.com/tballison)
 
-## Licence
+## License
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
