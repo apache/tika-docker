@@ -138,7 +138,7 @@ To meet up with others using Apache Tika, consider coming to one of the [Apache 
 
 For more information on the Apache Software Foundation, go to the [Apache Software Foundation](http://apache.org) website.
 
-For a full list of changes as of 2.5.0.1, visit [CHANGES.md](https://github.com/apache/tika-docker/CHANGES.md).
+For a full list of changes as of 2.5.0.1, visit [CHANGES.md](CHANGES.md).
 
 For our current release process, visit [tika-docker Release Process](https://cwiki.apache.org/confluence/display/TIKA/Release+Process+for+tika-docker)
 
