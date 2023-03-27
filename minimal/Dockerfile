@@ -17,19 +17,9 @@
 ARG UID_GID="35002:35002"
 
 FROM ubuntu:jammy as base
-RUN apt-get update
 
-FROM base as dependencies
+FROM base as fetch_tika
 
-# must reference uid_gid
-ARG UID_GID
-ARG JRE='openjdk-17-jre-headless'
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install $JRE
-
-FROM dependencies as fetch_tika
-# must reference uid_gid
-ARG UID_GID
 ARG TIKA_VERSION
 ARG CHECK_SIG=true
 
@@ -40,7 +30,12 @@ ENV NEAREST_TIKA_SERVER_URL="https://dlcdn.apache.org/tika/${TIKA_VERSION}/tika-
     ARCHIVE_TIKA_SERVER_ASC_URL="https://archive.apache.org/dist/tika/${TIKA_VERSION}/tika-server-standard-${TIKA_VERSION}.jar.asc" \
     TIKA_VERSION=$TIKA_VERSION
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install gnupg2 wget \
+RUN set -eux \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+        gnupg2 \
+        wget \
+        ca-certificates \
     && wget -t 10 --max-redirect 1 --retry-connrefused -qO- https://downloads.apache.org/tika/KEYS | gpg --import \
     && wget -t 10 --max-redirect 1 --retry-connrefused $NEAREST_TIKA_SERVER_URL -O /tika-server-standard-${TIKA_VERSION}.jar || rm /tika-server-standard-${TIKA_VERSION}.jar \
     && sh -c "[ -f /tika-server-standard-${TIKA_VERSION}.jar ]" || wget $ARCHIVE_TIKA_SERVER_URL -O /tika-server-standard-${TIKA_VERSION}.jar || rm /tika-server-standard-${TIKA_VERSION}.jar \
@@ -52,10 +47,16 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install gnupg2 wget \
 
 RUN if [ "$CHECK_SIG" = "true" ] ; then gpg --verify /tika-server-standard-${TIKA_VERSION}.jar.asc /tika-server-standard-${TIKA_VERSION}.jar; fi
 
-FROM dependencies as runtime
+FROM base as runtime
 # must reference uid_gid
 ARG UID_GID
-RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ARG JRE='openjdk-17-jre-headless'
+RUN set -eux \
+    && apt-get update \
+    && apt-get install --yes --no-install-recommends \
+        ${JRE} \
+        ca-certificates \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ARG TIKA_VERSION
 ENV TIKA_VERSION=$TIKA_VERSION
 COPY --from=fetch_tika /tika-server-standard-${TIKA_VERSION}.jar /tika-server-standard-${TIKA_VERSION}.jar
