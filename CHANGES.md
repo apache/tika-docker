@@ -3,8 +3,10 @@
 As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we'll include
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
+* 2.7.0.1 (27 Mar 2023)
+  * More efficient build process and final image size via @stumpylog on [pr#17](https://github.com/apache/tika-docker/pull).
 
-* 2.7.0.0 (6 Feb 2022)
+* 2.7.0.0 (6 Feb 2023)
   * Initial release for Tika 2.7.0
 
 * 2.6.0.1 (10 November 2022)
