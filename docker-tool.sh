@@ -76,20 +76,24 @@ tika_version=$1; shift
 case "$subcommand" in
   build)
     # Build slim tika- with minimal dependencies
-    docker build -t apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} - < minimal/Dockerfile --no-cache
+    docker build --tag apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} - < minimal/Dockerfile --no-cache --progress simple
+    # Build slim tika- with minimal dependencies and Alpine base
+    docker build --tag apache/tika:${tika_docker_version}-alpine --build-arg TIKA_VERSION=${tika_version} - < minimal/alpine.dockerfile --no-cache --progress simple
     # Build full tika- with OCR, Fonts and GDAL
-    docker build -t apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} - < full/Dockerfile --no-cache
+    docker build --tag apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} - < full/Dockerfile --no-cache --progress simple
     ;;
 
   test)
     # Test the images
     test_docker_image ${tika_docker_version}
+    test_docker_image ${tika_docker_version}-alpine
     test_docker_image "${tika_docker_version}-full"
     ;;
 
   publish)
-    # Push the build images
+    # Push the built images
     docker push apache/tika:${tika_docker_version}
+    docker push apache/tika:${tika_docker_version}-alpine
     docker push apache/tika:${tika_docker_version}-full
     ;;
 
@@ -97,6 +101,8 @@ case "$subcommand" in
     # Update the latest tags to point to supplied tika-
     docker tag apache/tika:${tika_docker_version} apache/tika:latest
     docker push apache/tika:latest
+    docker tag apache/tika:${tika_docker_version}-alpine apache/tika:latest-alpine
+    docker push apache/tika:latest-alpine
     docker tag apache/tika:${tika_docker_version}-full apache/tika:latest-full
     docker push apache/tika:latest-full
     ;;
