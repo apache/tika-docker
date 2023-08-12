@@ -14,6 +14,7 @@ env:
 
 jobs:
   build-image:
+    name: Build ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} v${{ inputs.TIKA_VERSION }} Docker images
     strategy:
       matrix:
         IMAGE_TYPE: ["full", "minimal"]
@@ -39,7 +40,7 @@ jobs:
 
       - name: Set Docker metadata
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v3
         with:
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}
