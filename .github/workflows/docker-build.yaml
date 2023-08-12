@@ -14,7 +14,7 @@ env:
 
 jobs:
   build-image:
-    name: Build ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} v${{ inputs.TIKA_VERSION }} Docker images
+    name: Build Tika v${{ inputs.TIKA_VERSION }} ${{ matrix.IMAGE_TYPE }} Docker images
     strategy:
       matrix:
         IMAGE_TYPE: ["full", "minimal"]
