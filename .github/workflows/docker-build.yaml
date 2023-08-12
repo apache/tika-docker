@@ -48,7 +48,7 @@ jobs:
         with:
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}
-            ghcr.io/${{ github.repository_owner }}//${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}
           tags: |
             type=raw,v${{ inputs.TIKA_VERSION }}
             type=raw,latest
