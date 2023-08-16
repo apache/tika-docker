@@ -1,3 +1,18 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 name: Build Docker images
 
 on:
@@ -5,6 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       TIKA_VERSION:
+        description: The Tika version to build the image from
         type: string
         default: 2.8.0
       PUSH_IMAGE:
@@ -13,32 +29,36 @@ on:
         default: true
 
 env:
+  # Further platforms can be specified here as long as the base image supports them
   PLATFORMS: linux/arm/v7,linux/arm64/v8,linux/amd64
   IMAGE_NAME: tika
 
 jobs:
   build-image:
     name: Build Tika v${{ inputs.TIKA_VERSION }} ${{ matrix.IMAGE_TYPE }} Docker images
+    runs-on: ubuntu-latest
+
+    # This will build both full and minimal images with each run of the workflow
     strategy:
       matrix:
         IMAGE_TYPE: ["full", "minimal"]
-    runs-on: ubuntu-latest
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
 
+      # QEMU and BuildX are required for multi-architecture support
       - name: Docker Setup QEMU
         uses: docker/setup-qemu-action@v2
-
       - name: Docker Setup Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Further registries to push the images to can be specified here
       - name: Login to DockerHub
         uses: docker/login-action@v2 
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2 
         with:
@@ -46,13 +66,17 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Set Docker metadata
+      # This action will generate the image names, tags and OCI compliant labels
+      # https://github.com/docker/metadata-action
+      - name: Set container image metadata
         id: meta
         uses: docker/metadata-action@v3
         with:
+          # Image names
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}
             ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}
+          # Image tags
           tags: |
             type=raw,v${{ inputs.TIKA_VERSION }}
             type=raw,latest
