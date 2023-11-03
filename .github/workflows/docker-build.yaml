@@ -108,7 +108,7 @@ jobs:
 
       # Build image and push to local registry for testing
       - name: "[BUILD] Build Tika v${{ env.TIKA_VERSION }} ${{ matrix.IMAGE_TYPE }} image"
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
@@ -173,7 +173,7 @@ jobs:
       # Push image to remote registries if tests have passed
       - name: "[DEPLOY] Push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} to remote registries"
         if: ${{ env.PUSH_IMAGE }}
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
