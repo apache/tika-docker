@@ -36,7 +36,7 @@ env:
 
 jobs:
   build-image:
-    name: Build Tika v${{ inputs.TIKA_VERSION }} ${{ matrix.IMAGE_TYPE }} Docker images
+    name: Build ${{ matrix.IMAGE_TYPE }} Docker image
     runs-on: ubuntu-latest
 
     # Set up a local registry so the multi-arch images can be stored for testing
@@ -64,17 +64,17 @@ jobs:
         shell: bash
         run: |
           echo "::group::Determine whether image should be pushed"
-          # If the workflow was run manually and the PUSH_IMAGE option enabled
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]] && [[ "${{ inputs.PUSH_IMAGE }}" == "true" ]]; then
-              PUSH_IMAGE=true
-          # If the workflow was triggered by the creation of a new tag
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              # If the workflow was run manually we want whatever the PUSH_IMAGE input is
+              PUSH_IMAGE=${{ inputs.PUSH_IMAGE }}
           elif [[ "${{ github.event_name }}" == "create" ]] && [[ "${{ github.ref }}" == "refs/tags/"* ]]
+              # If the workflow was triggered by the creation of a new tag
               PUSH_IMAGE=true
           else
               PUSH_IMAGE=false
           fi
           echo "PUSH_IMAGE=${PUSH_IMAGE}" >> $GITHUB_ENV
-          echo "Push image? ${{ PUSH_IMAGE }}
+          echo "Push image? ${PUSH_IMAGE}"
           echo "::endgroup::"
 
           echo "::group::Determine Tika version to build from"
@@ -85,7 +85,7 @@ jobs:
              TIKA_VERSION=$(echo ${IMAGE_VERSION} | sed 's/\(.*\)..\d*$/\1/')
           fi
           echo "Building Tika version ${TIKA_VERSION}."
-          echo "TIKA_VERSION=${TIKA_VERSION} >> $GITHUB_ENV"
+          echo "TIKA_VERSION=${TIKA_VERSION}" >> $GITHUB_ENV
           echo "::endgroup::"
          
       # QEMU and BuildX are required for multi-architecture support
