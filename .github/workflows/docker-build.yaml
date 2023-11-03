@@ -60,16 +60,16 @@ jobs:
         uses: actions/checkout@v4
 
       # QEMU and BuildX are required for multi-architecture support
-      - name: Docker Setup QEMU
+      - name: "[SETUP] Set up QEMU"
         uses: docker/setup-qemu-action@v2
       # Buildx requires host network access to communicate with the local registry
-      - name: Docker Setup Buildx
+      - name: "[SETUP] Set up Docker BuildX"
         uses: docker/setup-buildx-action@v2
         with:
           driver-opts: network=host
 
       # Build image and push to local registry for testing
-      - name: Build ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
+      - name: "[BUILD] Build ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image"
         uses: docker/build-push-action@v4
         with:
           file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
@@ -78,33 +78,36 @@ jobs:
           push: true
           build-args: TIKA_VERSION=${{ inputs.TIKA_VERSION }}
 
-      - name: Verify service responds to requests on default port
+      - name: "[TEST] Run test container"
         run: |
           docker run \
               -d \
               --name "${{ env.TEST_CONTAINER_NAME }}" \
               -p 9998:9998 \
-              ${{ env.TEST_IMAGE_NAME }}
-          sleep 10
+              ${{ env.TEST_IMAGE_NAME }} \
+          && sleep 10
+
+      - name: "[TEST] Verify service responds to requests on default port"
+        run: |
           url=http://localhost:9998/
           curl --head --location --connect-timeout 5 --silent --output /dev/null ${url} --fail-with-body
 
-      - name: Verify service will run as correct user
+      - name: "[TEST] Verify service runs as correct user"
         run: |
-          user=$(docker buildx imagetools inspect ${{ env.TEST_IMAGE_NAME }} --format '{{.Config.User}}')
+          user=$(docker inspect ${{ env.TEST_CONTAINER_NAME }} --format '{{.Config.User}}')
           if [[ $user != ${{ env.EXPECTED_USER }} ]]; then
               echo "Tika service running as user ${user}; expected ${{ env.EXPECTED_USER }}!"
               exit 1
           fi
 
        # Log in to remote registries if tests have passed and we're pushing to remote
-      - name: Login to DockerHub
+      - name: "[DEPLOY] Login to DockerHub"
         if: ${{ inputs.PUSH_IMAGE }}
         uses: docker/login-action@v2 
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Login to GitHub Container Registry
+      - name: "[DEPLOY] Login to GitHub Container Registry"
         if: ${{ inputs.PUSH_IMAGE }}
         uses: docker/login-action@v2 
         with:
@@ -114,7 +117,7 @@ jobs:
 
       # This action will generate the image names, tags and OCI compliant labels
       # https://github.com/docker/metadata-action
-      - name: Set container image metadata
+      - name: "[DEPLOY] Set container image metadata"
         id: meta
         uses: docker/metadata-action@v3
         with:
@@ -129,7 +132,7 @@ jobs:
             type=ref,event=tag
 
       # Push image to remote registries if tests have passed
-      - name: Push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
+      - name: "[DEPLOY] Push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image to remote registries"
         uses: docker/build-push-action@v4
         with:
           file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
