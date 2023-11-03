@@ -99,7 +99,7 @@ jobs:
          
       # QEMU and BuildX are required for multi-architecture support
       - name: "[SETUP] Set up QEMU"
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       # Buildx requires host network access to communicate with the local registry
       - name: "[SETUP] Set up Docker BuildX"
         uses: docker/setup-buildx-action@v3
