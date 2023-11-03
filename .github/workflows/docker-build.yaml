@@ -119,13 +119,13 @@ jobs:
       - name: "[TEST] Verify service responds to requests on default port"
         run: |
           url=http://localhost:9998/
-          curl --head --location --connect-timeout 5 --silent --output /dev/null ${url} --fail-with-body
+          curl --head --location --connect-timeout 5 --fail ${url}
 
       - name: "[TEST] Verify service runs as correct user"
         run: |
           user=$(docker inspect ${{ env.TEST_CONTAINER_NAME }} --format '{{.Config.User}}')
+          echo "Tika service running as user ${user}; expected ${{ env.EXPECTED_USER }}."
           if [[ $user != ${{ env.EXPECTED_USER }} ]]; then
-              echo "Tika service running as user ${user}; expected ${{ env.EXPECTED_USER }}!"
               exit 1
           fi
 
