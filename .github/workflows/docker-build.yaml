@@ -158,7 +158,7 @@ jobs:
       - name: "[DEPLOY] Set container image metadata"
         if: ${{ env.PUSH_IMAGE }}
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
           # Image names
           images: |
