@@ -80,6 +80,7 @@ jobs:
           tags: |
             type=raw,v${{ inputs.TIKA_VERSION }}
             type=raw,latest
+            type=ref,event=tag
 
       - name: Build and push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
         uses: docker/build-push-action@v4
