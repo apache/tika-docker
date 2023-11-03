@@ -19,7 +19,11 @@ updates:
   # Ensure the Docker base images receive automatic PRs for
   # base image updates
   - package-ecosystem: docker
-    directory: /
+    directory: /full
+    schedule:
+      interval: "daily"
+  - package-ecosystem: docker
+    directory: /minimal
     schedule:
       interval: "daily"
   # Ensure the GitHub workflows receive automatic PRs for
