@@ -27,6 +27,9 @@ on:
         description: Push image to registry
         type: boolean
         default: true
+  push:
+    tags:
+      - "*.*.*.*"
 
 env:
   # Further platforms can be specified here as long as the base image supports them
