@@ -45,7 +45,7 @@ jobs:
         IMAGE_TYPE: ["full", "minimal"]
 
     env:
-      TEST_CONTAINER_NAME: ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}-test
+      TEST_CONTAINER_NAME: tika-${{ matrix.IMAGE_TYPE }}-test
 
     steps:
       - name: Check out repo
