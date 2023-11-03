@@ -32,6 +32,7 @@ env:
   # Further platforms can be specified here as long as the base image supports them
   PLATFORMS: linux/arm/v7,linux/arm64/v8,linux/amd64
   IMAGE_NAME: tika
+  EXPECTED_USER: "35002:35002"
 
 jobs:
   build-image:
@@ -42,6 +43,9 @@ jobs:
     strategy:
       matrix:
         IMAGE_TYPE: ["full", "minimal"]
+
+    env:
+      TEST_CONTAINER_NAME: ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}-test
 
     steps:
       - name: Check out repo
@@ -82,7 +86,35 @@ jobs:
             type=raw,latest
             type=ref,event=tag
 
-      - name: Build and push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
+      - name: Build ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
+        uses: docker/build-push-action@v4
+        with:
+          file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          tags: ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}:test
+          push: false
+          load: true
+          build-args: TIKA_VERSION=${{ inputs.TIKA_VERSION }}
+
+      - name: Run ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} test container
+        run: |
+          docker run -d --name "${{ env.TEST_CONTAINER_NAME }}" -p 127.0.0.1:9998:9998 ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}:test
+          sleep 10
+
+      - name: Verify service is available
+        run: |
+          url=http://localhost:9998/
+          curl --head --location --connect-timeout 5 --silent --output /dev/null ${url} --fail-with-body
+
+      - name: Verify service is running as correct user
+        run: |
+          user=$(docker inspect "${{ env.TEST_CONTAINER_NAME }}" --format '{{.Config.User}}')
+          if [[ $user != ${{ env.EXPECTED_USER }} ]]; then
+              echo "Tika service running as user ${user}; expected ${{ env.EXPECTED_USER }}!"
+              exit 1
+          fi
+             
+      - name: Push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
         uses: docker/build-push-action@v4
         with:
           file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
