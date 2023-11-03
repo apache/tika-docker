@@ -67,11 +67,11 @@ jobs:
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
               # If the workflow was run manually we want whatever the PUSH_IMAGE input is
               PUSH_IMAGE=${{ inputs.PUSH_IMAGE }}
-          elif [[ "${{ github.event_name }}" == "create" ]] && [[ "${{ github.ref }}" == "refs/tags/"* ]]
+          elif [[ "${{ github.event_name }}" == "create" ]] && [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
               # If the workflow was triggered by the creation of a new tag
-              PUSH_IMAGE=true
+              PUSH_IMAGE="true"
           else
-              PUSH_IMAGE=false
+              PUSH_IMAGE="false"
           fi
           echo "PUSH_IMAGE=${PUSH_IMAGE}" >> $GITHUB_ENV
           echo "Push image? ${PUSH_IMAGE}"
