@@ -69,7 +69,7 @@ jobs:
           echo "::group::Determine whether image should be pushed"
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
               # If the workflow was run manually we want whatever the PUSH_IMAGE input is
-              PUSH_IMAGE=${{ inputs.PUSH_IMAGE }}
+              PUSH_IMAGE="${{ inputs.PUSH_IMAGE }}"
           elif [[ "${{ github.event_name }}" == "create" ]] && [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
               # If the workflow was triggered by the creation of a new tag
               PUSH_IMAGE="true"
@@ -88,12 +88,12 @@ jobs:
 
           echo "::group::Determine Tika version to build from"
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-              TIKA_VERSION=${{ inputs.TIKA_VERSION }}
+              TIKA_VERSION="${{ inputs.TIKA_VERSION }}"
           else
              IMAGE_VERSION=$(git describe --tags --abbrev=0)
              TIKA_VERSION=$(echo ${IMAGE_VERSION} | sed 's/\(.*\)..\d*$/\1/')
           fi
-          echo "Building Tika version ${TIKA_VERSION}."
+          echo "Building Tika version ${TIKA_VERSION}"
           echo "TIKA_VERSION=${TIKA_VERSION}" >> $GITHUB_ENV
           echo "::endgroup::"
          
@@ -140,13 +140,13 @@ jobs:
 
        # Log in to remote registries if tests have passed and we're pushing to remote
       - name: "[DEPLOY] Login to Docker Hub"
-        if: ${{ env.PUSH_IMAGE }}
+        if: ${{ env.PUSH_IMAGE }} == "true"
         uses: docker/login-action@v3 
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: "[DEPLOY] Login to GitHub Container Registry"
-        if: ${{ env.PUSH_IMAGE }}
+        if: ${{ env.PUSH_IMAGE }} == "true"
         uses: docker/login-action@v3 
         with:
           registry: ghcr.io
@@ -156,7 +156,7 @@ jobs:
       # This action will generate the image names, tags and OCI compliant labels
       # https://github.com/docker/metadata-action
       - name: "[DEPLOY] Set container image metadata"
-        if: ${{ env.PUSH_IMAGE }}
+        if: ${{ env.PUSH_IMAGE }} == "true"
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -172,7 +172,7 @@ jobs:
 
       # Push image to remote registries if tests have passed
       - name: "[DEPLOY] Push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} to remote registries"
-        if: ${{ env.PUSH_IMAGE }}
+        if: ${{ env.PUSH_IMAGE }} == "true"
         uses: docker/build-push-action@v5
         with:
           file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
