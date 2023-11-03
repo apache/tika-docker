@@ -39,6 +39,13 @@ jobs:
     name: Build Tika v${{ inputs.TIKA_VERSION }} ${{ matrix.IMAGE_TYPE }} Docker images
     runs-on: ubuntu-latest
 
+    # Set up a local registry so the multi-arch images can be stored for testing
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+
     # This will build both full and minimal images with each run of the workflow
     strategy:
       matrix:
@@ -46,24 +53,59 @@ jobs:
 
     env:
       TEST_CONTAINER_NAME: tika-${{ matrix.IMAGE_TYPE }}-test
+      TEST_IMAGE_NAME: localhost:5000/tika/tika-${{ matrix.IMAGE_TYPE }}:test
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # QEMU and BuildX are required for multi-architecture support
       - name: Docker Setup QEMU
         uses: docker/setup-qemu-action@v2
+      # Buildx requires host network access to communicate with the local registry
       - name: Docker Setup Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          driver-opts: network=host
 
-      # Further registries to push the images to can be specified here
+      # Build image and push to local registry for testing
+      - name: Build ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
+        uses: docker/build-push-action@v4
+        with:
+          file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          tags: ${{ env.TEST_IMAGE_NAME }}
+          push: true
+          build-args: TIKA_VERSION=${{ inputs.TIKA_VERSION }}
+
+      - name: Verify service responds to requests on default port
+        run: |
+          docker run \
+              -d \
+              --name "${{ env.TEST_CONTAINER_NAME }}" \
+              -p 9998:9998 \
+              ${{ env.TEST_IMAGE_NAME }}
+          sleep 10
+          url=http://localhost:9998/
+          curl --head --location --connect-timeout 5 --silent --output /dev/null ${url} --fail-with-body
+
+      - name: Verify service will run as correct user
+        run: |
+          user=$(docker buildx imagetools inspect ${{ env.TEST_IMAGE_NAME }} --format '{{.Config.User}}')
+          if [[ $user != ${{ env.EXPECTED_USER }} ]]; then
+              echo "Tika service running as user ${user}; expected ${{ env.EXPECTED_USER }}!"
+              exit 1
+          fi
+
+       # Log in to remote registries if tests have passed and we're pushing to remote
       - name: Login to DockerHub
+        if: ${{ inputs.PUSH_IMAGE }}
         uses: docker/login-action@v2 
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Login to GitHub Container Registry
+        if: ${{ inputs.PUSH_IMAGE }}
         uses: docker/login-action@v2 
         with:
           registry: ghcr.io
@@ -86,34 +128,7 @@ jobs:
             type=raw,latest
             type=ref,event=tag
 
-      - name: Build ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
-        uses: docker/build-push-action@v4
-        with:
-          file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
-          platforms: ${{ env.PLATFORMS }}
-          tags: ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}:test
-          push: false
-          load: true
-          build-args: TIKA_VERSION=${{ inputs.TIKA_VERSION }}
-
-      - name: Run ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} test container
-        run: |
-          docker run -d --name "${{ env.TEST_CONTAINER_NAME }}" -p 127.0.0.1:9998:9998 ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}:test
-          sleep 10
-
-      - name: Verify service is available
-        run: |
-          url=http://localhost:9998/
-          curl --head --location --connect-timeout 5 --silent --output /dev/null ${url} --fail-with-body
-
-      - name: Verify service is running as correct user
-        run: |
-          user=$(docker inspect "${{ env.TEST_CONTAINER_NAME }}" --format '{{.Config.User}}')
-          if [[ $user != ${{ env.EXPECTED_USER }} ]]; then
-              echo "Tika service running as user ${user}; expected ${{ env.EXPECTED_USER }}!"
-              exit 1
-          fi
-             
+      # Push image to remote registries if tests have passed
       - name: Push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} image
         uses: docker/build-push-action@v4
         with:
