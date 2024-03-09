@@ -1,0 +1,183 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Build Docker images
+
+on:
+  # Allow manual runs.
+  workflow_dispatch:
+    inputs:
+      TIKA_VERSION:
+        description: The Tika version to build the image from
+        type: string
+        default: 2.8.0
+      PUSH_IMAGE:
+        description: Push image to registry
+        type: boolean
+        default: true
+  push:
+    tags:
+      - "*.*.*.*"
+
+env:
+  # Further platforms can be specified here as long as the base image supports them
+  PLATFORMS: linux/arm/v7,linux/arm64/v8,linux/amd64
+  IMAGE_NAME: tika
+  EXPECTED_USER: "35002:35002"
+
+jobs:
+  build-image:
+    name: Build ${{ matrix.IMAGE_TYPE }} Docker image
+    runs-on: ubuntu-latest
+
+    # Set up a local registry so the multi-arch images can be stored for testing
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+
+    # This will build both full and minimal images with each run of the workflow
+    strategy:
+      matrix:
+        IMAGE_TYPE: ["full", "minimal"]
+
+    env:
+      TEST_CONTAINER_NAME: tika-${{ matrix.IMAGE_TYPE }}-test
+      TEST_IMAGE_NAME: localhost:5000/tika/tika-${{ matrix.IMAGE_TYPE }}:test
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      # Determine Tika version to build from current tag name
+      - name: "[SETUP] Determine build configuration"
+        shell: bash
+        run: |
+          echo "::group::Determine whether image should be pushed"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              # If the workflow was run manually we want whatever the PUSH_IMAGE input is
+              PUSH_IMAGE="${{ inputs.PUSH_IMAGE }}"
+          elif [[ "${{ github.event_name }}" == "create" ]] && [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
+              # If the workflow was triggered by the creation of a new tag
+              PUSH_IMAGE="true"
+          elif [[ "${{ github.event_name }}" == "push" ]] && [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
+              # If the workflow was triggered by push of a new tag
+              PUSH_IMAGE="true"
+          elif [[ "${{ github.event_name }}" == "release" ]]; then
+              # If the workflow was triggered by the creation of a new GitHub release
+              PUSH_IMAGE="true"
+          else
+              PUSH_IMAGE="false"
+          fi
+          echo "PUSH_IMAGE=${PUSH_IMAGE}" >> $GITHUB_ENV
+          echo "Push image? ${PUSH_IMAGE}"
+          echo "::endgroup::"
+
+          echo "::group::Determine Tika version to build from"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              TIKA_VERSION="${{ inputs.TIKA_VERSION }}"
+          else
+             IMAGE_VERSION=$(git describe --tags --abbrev=0)
+             TIKA_VERSION=$(echo ${IMAGE_VERSION} | sed 's/\(.*\)..\d*$/\1/')
+          fi
+          echo "Building Tika version ${TIKA_VERSION}"
+          echo "TIKA_VERSION=${TIKA_VERSION}" >> $GITHUB_ENV
+          echo "::endgroup::"
+         
+      # QEMU and BuildX are required for multi-architecture support
+      - name: "[SETUP] Set up QEMU"
+        uses: docker/setup-qemu-action@v3
+      # Buildx requires host network access to communicate with the local registry
+      - name: "[SETUP] Set up Docker BuildX"
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
+
+      # Build image and push to local registry for testing
+      - name: "[BUILD] Build Tika v${{ env.TIKA_VERSION }} ${{ matrix.IMAGE_TYPE }} image"
+        uses: docker/build-push-action@v5
+        with:
+          file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          tags: ${{ env.TEST_IMAGE_NAME }}
+          push: true
+          build-args: TIKA_VERSION=${{ env.TIKA_VERSION }}
+
+      - name: "[TEST] Run test container"
+        run: |
+          docker run \
+              -d \
+              --name "${{ env.TEST_CONTAINER_NAME }}" \
+              -p 9998:9998 \
+              ${{ env.TEST_IMAGE_NAME }} \
+          && sleep 10
+
+      - name: "[TEST] Verify service responds to requests on default port"
+        run: |
+          url=http://localhost:9998/
+          curl --head --location --connect-timeout 5 --fail ${url}
+
+      - name: "[TEST] Verify service runs as correct user"
+        run: |
+          user=$(docker inspect ${{ env.TEST_CONTAINER_NAME }} --format '{{.Config.User}}')
+          echo "Tika service running as user ${user}; expected ${{ env.EXPECTED_USER }}."
+          if [[ $user != ${{ env.EXPECTED_USER }} ]]; then
+              exit 1
+          fi
+
+       # Log in to remote registries if tests have passed and we're pushing to remote
+      - name: "[DEPLOY] Login to Docker Hub"
+        if: env.PUSH_IMAGE == 'true'
+        uses: docker/login-action@v3 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: "[DEPLOY] Login to GitHub Container Registry"
+        if: env.PUSH_IMAGE == 'true'
+        uses: docker/login-action@v3 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      # This action will generate the image names, tags and OCI compliant labels
+      # https://github.com/docker/metadata-action
+      - name: "[DEPLOY] Set container image metadata"
+        if: env.PUSH_IMAGE == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # Image names
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }}
+          # Image tags
+          tags: |
+            type=raw,v${{ env.TIKA_VERSION }}
+            type=raw,latest
+            type=ref,event=tag
+
+      # Push image to remote registries if tests have passed
+      - name: "[DEPLOY] Push ${{ env.IMAGE_NAME }}-${{ matrix.IMAGE_TYPE }} to remote registries"
+        if: env.PUSH_IMAGE == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          file: ${{ matrix.IMAGE_TYPE }}/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ env.PUSH_IMAGE }}
+          build-args: TIKA_VERSION=${{ env.TIKA_VERSION }}
