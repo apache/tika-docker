@@ -18,7 +18,7 @@
 #   under the License.
 
 stop_and_die() {
-  docker buildx stop tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
+  docker buildx rm tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
   die "$*"
 }
 
@@ -103,7 +103,7 @@ case "$subcommand" in
       --tag apache/tika:latest --tag apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder minimal || stop_and_die "couldn't build multi-arch minimal"
     docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --output "type=image,push=true" \
       --tag apache/tika:latest-full --tag apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder full || stop_and_die "couldn't build multi-arch full"
-    docker buildx stop tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
+    docker buildx rm tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
     ;;
 
 esac
