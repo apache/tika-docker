@@ -17,6 +17,11 @@
 #   specific language governing permissions and limitations
 #   under the License.
 
+stop_and_die() {
+  docker buildx stop tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
+  die "$*"
+}
+
 die() {
   echo "$*" >&2
   exit 1
@@ -80,9 +85,9 @@ tika_version=$1; shift
 case "$subcommand" in
   build)
     # Build slim tika- with minimal dependencies
-    docker build -t apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} - < minimal/Dockerfile --no-cache || die "couldn't build"
+    docker build -t apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} - < minimal/Dockerfile --no-cache || die "couldn't build minimal"
     # Build full tika- with OCR, Fonts and GDAL
-    docker build -t apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} - < full/Dockerfile --no-cache || die "couldn't build"
+    docker build -t apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} - < full/Dockerfile --no-cache || die "couldn't build full"
     ;;
 
   test)
@@ -92,13 +97,13 @@ case "$subcommand" in
     ;;
 
   publish)
-    docker buildx create --use --name tika-builder || die "couldn't start builder"
+    docker buildx create --use --name tika-builder || die "couldn't create builder"
     # Build multi-arch with buildx and push
     docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --output "type=image,push=true" \
-      --tag apache/tika:latest --tag apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder minimal || die "couldn't build multi-arch minimal"
+      --tag apache/tika:latest --tag apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder minimal || stop_and_die "couldn't build multi-arch minimal"
     docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --output "type=image,push=true" \
-      --tag apache/tika:latest-full --tag apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder full || die "couldn't build multi-arch full"
-    docker buildx stop tika-builder
+      --tag apache/tika:latest-full --tag apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder full || stop_and_die "couldn't build multi-arch full"
+    docker buildx stop tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
     ;;
 
 esac
