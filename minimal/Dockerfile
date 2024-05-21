@@ -16,7 +16,7 @@
 # the subsequent stages -- see TIKA-3912
 ARG UID_GID="35002:35002"
 
-FROM ubuntu:jammy as base
+FROM ubuntu:noble as base
 
 FROM base as fetch_tika
 
