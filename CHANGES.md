@@ -4,6 +4,10 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
+* 2.9.2.1 (21 May 2024)
+  * Updated to noble
+  * First multi-arch release
+
 * 2.9.2.0 (10 October 2023)
   * Initial release for Tika 2.9.2
 
