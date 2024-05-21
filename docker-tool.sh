@@ -17,6 +17,16 @@
 #   specific language governing permissions and limitations
 #   under the License.
 
+stop_and_die() {
+  docker buildx rm tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
+  die "$*"
+}
+
+die() {
+  echo "$*" >&2
+  exit 1
+}
+
 while getopts ":h" opt; do
   case ${opt} in
     h )
@@ -24,8 +34,7 @@ while getopts ":h" opt; do
       echo "    docker-tool.sh -h                      Display this help message."
       echo "    docker-tool.sh build <TIKA_DOCKER_VERSION> <TIKA_VERSION>   Builds <TIKA_DOCKER_VERSION> images for <TIKA_VERSION>."
       echo "    docker-tool.sh test <TIKA_DOCKER_VERSION>     Tests images for <TIKA_DOCKER_VERSION>."
-      echo "    docker-tool.sh publish <TIKA_DOCKER_VERSION>  Publishes images for <TIKA_DOCKER_VERSION> to Docker Hub."
-      echo "    docker-tool.sh latest <TIKA_DOCKER_VERSION>   Tags images for <TIKA_DOCKER_VERSION> as latest on Docker Hub."
+      echo "    docker-tool.sh publish <TIKA_DOCKER_VERSION> <TIKA_VERSION> Builds multi-arch images for <TIKA_DOCKER_VERSION> and pushes to Docker Hub."
       exit 0
       ;;
    \? )
@@ -76,9 +85,9 @@ tika_version=$1; shift
 case "$subcommand" in
   build)
     # Build slim tika- with minimal dependencies
-    docker build -t apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} - < minimal/Dockerfile --no-cache
+    docker build -t apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} - < minimal/Dockerfile --no-cache || die "couldn't build minimal"
     # Build full tika- with OCR, Fonts and GDAL
-    docker build -t apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} - < full/Dockerfile --no-cache
+    docker build -t apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} - < full/Dockerfile --no-cache || die "couldn't build full"
     ;;
 
   test)
@@ -88,17 +97,13 @@ case "$subcommand" in
     ;;
 
   publish)
-    # Push the build images
-    docker push apache/tika:${tika_docker_version}
-    docker push apache/tika:${tika_docker_version}-full
-    ;;
-
-  latest)
-    # Update the latest tags to point to supplied tika-
-    docker tag apache/tika:${tika_docker_version} apache/tika:latest
-    docker push apache/tika:latest
-    docker tag apache/tika:${tika_docker_version}-full apache/tika:latest-full
-    docker push apache/tika:latest-full
+    docker buildx create --use --name tika-builder || die "couldn't create builder"
+    # Build multi-arch with buildx and push
+    docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --output "type=image,push=true" \
+      --tag apache/tika:latest --tag apache/tika:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder minimal || stop_and_die "couldn't build multi-arch minimal"
+    docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --output "type=image,push=true" \
+      --tag apache/tika:latest-full --tag apache/tika:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder full || stop_and_die "couldn't build multi-arch full"
+    docker buildx rm tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
     ;;
 
 esac
