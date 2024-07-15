@@ -16,10 +16,10 @@ To install more languages simply update the apt-get command to include the packa
 ## Available Tags
 
 Below are the most recent 2.x series tags:
-- `latest`, `2.9.2.1`: Apache Tika Server 2.9.2.0 (Minimal)
-- `latest-full`, `2.9.2.1-full`: Apache Tika Server 2.9.2.0 (Full)
-- `2.9.2.1`, `2.9.2.1`: Apache Tika Server 2.9.2.0 (Minimal)
-- `2.9.2.1`, `2.9.2.1-full`: Apache Tika Server 2.9.2.0 (Full)
+- `latest`, `2.9.2.1`: Apache Tika Server 2.9.2.1 (Minimal)
+- `latest-full`, `2.9.2.1-full`: Apache Tika Server 2.9.2.1 (Full)
+- `2.9.2.1`, `2.9.2.1`: Apache Tika Server 2.9.2.1 (Minimal)
+- `2.9.2.1`, `2.9.2.1-full`: Apache Tika Server 2.9.2.1 (Full)
 - `2.9.2.0`, `2.9.2.0`: Apache Tika Server 2.9.2.0 (Minimal)
 - `2.9.2.0`, `2.9.2.0-full`: Apache Tika Server 2.9.2.0 (Full)
 - `2.9.1.0`, `2.9.1.0`: Apache Tika Server 2.9.1.0 (Minimal)
