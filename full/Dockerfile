@@ -15,9 +15,9 @@
 # the subsequent stages -- see TIKA-3912
 ARG UID_GID="35002:35002"
 
-FROM ubuntu:noble as base
+FROM ubuntu:noble AS base
 
-FROM base as fetch_tika
+FROM base AS fetch_tika
 
 ARG TIKA_VERSION
 ARG CHECK_SIG=true
@@ -42,9 +42,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y install gnupg2 w
 
 #RUN if [ "$CHECK_SIG" = "true" ] ; then gpg --verify /tika-server-standard-${TIKA_VERSION}.jar.asc /tika-server-standard-${TIKA_VERSION}.jar; fi
 
-FROM base as runtime
+FROM base AS runtime
 ARG UID_GID
-ARG JRE='openjdk-17-jre-headless'
+ARG JRE='openjdk-21-jre-headless'
 RUN set -eux \
     && apt-get update \
     && apt-get install --yes --no-install-recommends gnupg2 software-properties-common \
