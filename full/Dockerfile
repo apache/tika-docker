@@ -15,7 +15,7 @@
 # the subsequent stages -- see TIKA-3912
 ARG UID_GID="35002:35002"
 
-FROM ubuntu:noble AS base
+FROM ubuntu:oracular AS base
 
 FROM base AS fetch_tika
 

@@ -4,6 +4,10 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
+* 3.1.0.0 (31 Jan 2025)
+  * First 3.1.0 release
+  * Update base to oracular
+
 * 3.0.0.0 (21 Oct 2024)
   * First 3.x stable release
   * Bump jre to 21
