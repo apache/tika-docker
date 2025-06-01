@@ -51,13 +51,14 @@ RUN set -eux \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends $JRE \
         gdal-bin \
+        imagemagick \
         tesseract-ocr \
         tesseract-ocr-eng \
         tesseract-ocr-ita \
         tesseract-ocr-fra \
         tesseract-ocr-spa \
         tesseract-ocr-deu \
-        imagemagick \
+        tesseract-ocr-jpn \
     && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections \
     && DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         xfonts-utils \
