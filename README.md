@@ -9,15 +9,20 @@ There is a minimal version, which contains only Apache Tika and it's core depend
 * French
 * German
 * Italian
-* Spanish.
+* Spanish
+* Japanese
 
 To install more languages simply update the apt-get command to include the package containing the language you required, or include your own custom packs using an ADD command.
 
 ## Available Tags
 
 Below are the most recent 3.x series tags:
-- `latest`, `3.0.0.0`: Apache Tika Server 3.0.0.0 (Minimal)
-- `latest-full`, `3.0.0.0-full`: Apache Tika Server 3.0.0.0 (Full)
+- `latest`, `3.2.0.0`: Apache Tika Server 3.0.0.0 (Minimal)
+- `latest-full`, `3.2.0.0-full`: Apache Tika Server 3.0.0.0 (Full)
+- `3.2.0.0`, `3.2.0.0-BETA2`: Apache Tika Server 3.0.0.0 (Minimal)
+- `3.2.0.0`, `3.2.0.0-BETA2-full`: Apache Tika Server 3.0.0.0 (Full)
+- `3.1.0.0`, `3.1.0.0-BETA2`: Apache Tika Server 3.0.0.0 (Minimal)
+- `3.1.0.0`, `3.1.0.0-BETA2-full`: Apache Tika Server 3.0.0.0 (Full)
 - `3.0.0.0`, `3.0.0.0-BETA2`: Apache Tika Server 3.0.0.0 (Minimal)
 - `3.0.0.0`, `3.0.0.0-BETA2-full`: Apache Tika Server 3.0.0.0 (Full)
 - `3.0.0.0-BETA2`, `3.0.0.0-BETA2`: Apache Tika Server 3.0.0.0-BETA2 (Minimal)
