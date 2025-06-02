@@ -51,6 +51,7 @@ RUN set -eux \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends $JRE \
         gdal-bin \
+        imagemagick \
         tesseract-ocr \
         tesseract-ocr-eng \
         tesseract-ocr-ita \
