@@ -4,6 +4,12 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
+* 3.2.2.0 (8 Aug 2025)
+  * First 3.2.2 release
+
+* 3.2.1.0 (9 Jul 2025)
+  * First 3.2.1 release
+
 * 3.2.0.0 (2 Jun 2025)
   * First 3.2.0 release
   * Update base to plucky
