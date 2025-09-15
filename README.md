@@ -17,12 +17,14 @@ To install more languages simply update the apt-get command to include the packa
 ## Available Tags
 
 Below are the most recent 3.x series tags:
-- `latest`, `3.2.2.0`: Apache Tika Server 3.2.2.0 (Minimal)
-- `latest-full`, `3.2.2.0-full`: Apache Tika Server 3.2.2.0 (Full)
+- `latest`, `3.2.3.0`: Apache Tika Server 3.2.3.0 (Minimal)
+- `latest-full`, `3.2.3.0-full`: Apache Tika Server 3.2.3.0 (Full)
+- `3.2.3.0`, `3.2.3.0`: Apache Tika Server 3.2.3.0 (Minimal)
+- `3.2.3.0`, `3.2.3.0-full`: Apache Tika Server 3.2.3.0 (Full)
 - `3.2.2.0`, `3.2.2.0`: Apache Tika Server 3.2.2.0 (Minimal)
 - `3.2.2.0`, `3.2.2.0-full`: Apache Tika Server 3.2.2.0 (Full)
-- `3.2.1.0`, `3.2.2.0`: Apache Tika Server 3.2.1.0 (Minimal)
-- `3.2.1.0`, `3.2.2.0-full`: Apache Tika Server 3.2.1.0 (Full)
+- `3.2.1.0`, `3.2.1.0`: Apache Tika Server 3.2.1.0 (Minimal)
+- `3.2.1.0`, `3.2.1.0-full`: Apache Tika Server 3.2.1.0 (Full)
 - `3.2.0.0`, `3.2.0.0`: Apache Tika Server 3.2.0.0 (Minimal)
 - `3.2.0.0`, `3.2.0.0-full`: Apache Tika Server 3.2.0.0 (Full)
 - `3.1.0.0`, `3.1.0.0`: Apache Tika Server 3.1.0.0 (Minimal)
