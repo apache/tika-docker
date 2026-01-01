@@ -81,6 +81,17 @@ Below are the most recent 1.x series tags. **Note** that as of 30 September 2022
 
 You can see a full set of tags for historical versions [here](https://hub.docker.com/r/apache/tika/tags?page=1&ordering=last_updated).
 
+## Supported Platforms
+
+The Docker images are published as multi-platform images supporting the following architectures:
+
+- `linux/amd64` - 64-bit x86 processors (Intel/AMD)
+- `linux/arm/v7` - 32-bit ARM processors
+- `linux/arm64/v8` - 64-bit ARM processors (Apple Silicon, AWS Graviton, etc.)
+- `linux/s390x` - IBM System z mainframes
+
+Docker will automatically pull the correct image for your platform when you use `docker pull` or `docker run`.
+
 ## Usage
 
 ### Default
