@@ -45,6 +45,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y install gnupg2 w
 FROM base AS runtime
 ARG UID_GID
 ARG JRE='openjdk-21-jre-headless'
+ARG LANGUAGES='eng ita fra spa deu jpn'
 RUN set -eux \
     && apt-get update \
     && apt-get install --yes --no-install-recommends gnupg2 software-properties-common \
@@ -53,12 +54,7 @@ RUN set -eux \
         gdal-bin \
         imagemagick \
         tesseract-ocr \
-        tesseract-ocr-eng \
-        tesseract-ocr-ita \
-        tesseract-ocr-fra \
-        tesseract-ocr-spa \
-        tesseract-ocr-deu \
-        tesseract-ocr-jpn \
+        $(printf 'tesseract-ocr-%s ' $LANGUAGES) \
     && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections \
     && DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         xfonts-utils \
