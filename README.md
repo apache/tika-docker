@@ -152,22 +152,27 @@ From version 1.25 and 1.25-full of the image it is now easier to override the de
 So for example if you wish to disable the OCR parser in the full image you could write a custom configuration:
 
 ```
-cat <<EOT >> tika-config.xml
-<?xml version="1.0" encoding="UTF-8"?>
-<properties>
-  <parsers>
-      <parser class="org.apache.tika.parser.DefaultParser">
-          <parser-exclude class="org.apache.tika.parser.ocr.TesseractOCRParser"/>
-      </parser>
-  </parsers>
-</properties>
+cat <<EOT >> tika-config.json
+{
+  "parsers": [
+    { "default-parser": {} },
+    { "tesseract-ocr-parser": { "skipOcr": true } }
+  ]
+}
 EOT
 ```
 Then by mounting this custom configuration as a volume, you could pass the command line parameter to load it
 
-    docker run -d -p 127.0.0.1:9998:9998 -v `pwd`/tika-config.xml:/tika-config.xml apache/tika:2.5.0-full --config /tika-config.xml
+    docker run -d -p 127.0.0.1:9998:9998 -v `pwd`/tika-config.json:/tika-config.json apache/tika:<tag>-full -c /tika-config.json
 
-You can see more configuration examples [here](https://tika.apache.org/2.5.0/configuring.html).
+NOTE: Tika 4.x replaced the XML `tika-config.xml` format with JSON
+`tika-config.json` (see TIKA-4544). The XML form above is what 2.x / 3.x
+images expect; if you're pinned to those tags, keep using the XML.
+
+You can see more configuration examples on the
+[Tika website](https://tika.apache.org/) and in the canonical samples under
+`tika-server/tika-server-core/src/test/resources/config-examples/` in the
+source tree.
 
 As of 2.5.0.2, if you'd like to add extra jars from your local `my-jars` directory to Tika's classpath, mount to `/tika-extras` like so:
 
@@ -182,10 +187,9 @@ There are a number of sample Docker Compose files included in the repos to allow
 
 These files use docker-compose 3.x series and include:
 
-* docker-compose-tika-vision.yml - TensorFlow Inception REST API Vision examples
+* docker-compose-tika-vision.yml - Vision-Language Model parsing example (OpenAI-compatible / Claude / Gemini)
 * docker-compose-tika-grobid.yml - Grobid REST parsing example
 * docker-compose-tika-customocr.yml - Tesseract OCR example with custom configuration
-* docker-compose-tika-ner.yml - Named Entity Recognition example
 
 The Docker Compose files and configurations (sourced from _sample-configs_ directory) all have comments in them so you can try different options, or use them as a base to create your own custom configuration.
 

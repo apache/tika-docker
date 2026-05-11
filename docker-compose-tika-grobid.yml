@@ -19,10 +19,15 @@ services:
   ## Apache Tika Server 
   tika:
     image: apache/tika:${TAG}-full
-    # Override default so we can add configuration on classpath
-    entrypoint: [ "/bin/sh", "-c", "exec java -cp \"/grobid:/tika-server-standard-$${TIKA_VERSION}.jar:/tika-extras/*\" org.apache.tika.server.core.TikaServerCli -h 0.0.0.0 $$0 $$@"]
+    # Override default so we can add the /grobid dir on the classpath
+    # (for the bundled GrobidExtractor.properties). The 4.x image layout
+    # places the thin server jar at /opt/tika-server/tika-server.jar and its
+    # deps at /opt/tika-server/lib/*. working_dir=/opt/tika-server matters for
+    # tika-server's plugin-roots fallback.
+    entrypoint: [ "/bin/sh", "-c", "exec java -cp \"/grobid:/opt/tika-server/tika-server.jar:/opt/tika-server/lib/*:/tika-extras/*\" org.apache.tika.server.core.TikaServerCli -h 0.0.0.0 $$0 $$@"]
+    working_dir: /opt/tika-server
     # Kept command as example but could be added to entrypoint too
-    command: -c /grobid/tika-config.xml
+    command: -c /grobid/tika-config.json
     restart: on-failure
     ports:
       - "9998:9998"
