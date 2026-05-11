@@ -4,6 +4,13 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
+* 4.0.0-alpha-1.0 (9 May 2026)
+  * First 4.0.0-alpha-1 release (preview; not tagged `latest`)
+  * Dropped `linux/arm/v7` from the published platforms. 32-bit ARM emulated
+    builds on Ubuntu 26.04 (resolute) hit a qemu chown-overflow in
+    `update-notifier-common`'s postinst, which is pulled in by
+    `ttf-mscorefonts-installer`. `linux/arm64/v8` covers modern ARM.
+
 * 3.3.0.0 (23 Mar 2026)
   * First 3.3.0 release
   

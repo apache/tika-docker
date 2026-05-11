@@ -16,9 +16,12 @@ To install more languages, set the build argument `LANGUAGES` or include your ow
 
 ## Available Tags
 
-Below are the most recent 3.x series tags:
+Below are the most recent tags. The `latest` tags track the 3.x stable line;
+4.x preview releases are published as version-specific tags only.
 - `latest`, `3.3.0.0`: Apache Tika Server 3.3.0.0 (Minimal)
 - `latest-full`, `3.3.0.0-full`: Apache Tika Server 3.3.0.0 (Full)
+- `4.0.0-alpha-1.0`: Apache Tika Server 4.0.0-alpha-1.0 (Minimal, 4.x preview)
+- `4.0.0-alpha-1.0-full`: Apache Tika Server 4.0.0-alpha-1.0 (Full, 4.x preview)
 - `3.3.0.0`, `3.3.0.0`: Apache Tika Server 3.3.0.0 (Minimal)
 - `3.3.0.0`, `3.3.0.0-full`: Apache Tika Server 3.3.0.0 (Full)
 - `3.2.3.0`, `3.2.3.0`: Apache Tika Server 3.2.3.0 (Minimal)
@@ -83,14 +86,40 @@ Below are the most recent 1.x series tags. **Note** that as of 30 September 2022
 
 You can see a full set of tags for historical versions [here](https://hub.docker.com/r/apache/tika/tags?page=1&ordering=last_updated).
 
+## 4.x Preview Notes
+
+The `4.0.0-alpha-1.0` images are a preview of the upcoming Tika 4.x line and are
+not tagged `latest`.
+
+Tika 4.x changed the `tika-server-standard` packaging: the published jar is now
+a thin top-level jar that resolves its dependencies from a sibling `lib/`
+directory. The 4.x image therefore ships the unpacked `tika-server-standard-bin.zip`
+distribution under `/opt/tika-server/` (containing `tika-server.jar`, `lib/`,
+and `plugins/`) instead of a single fat jar.
+
+The standard REST endpoints (`/tika`, `/rmeta`, `/unpack`, `/detect`, etc.)
+work as in 3.x — they spool the request body to a temp file internally via
+`TikaInputStream` and do not require any pipes plugin.
+
+Pipes-mode endpoints (`/pipes`, `/async`) require pf4j plugins. The
+`tika-pipes-file-system` plugin is **bundled** under
+`/opt/tika-server/plugins/tika-pipes-file-system/` (it ships inside the
+upstream `tika-server-standard-bin.zip`). Other pipes plugins
+(`tika-pipes-http`, `tika-pipes-s3`, etc.) are not currently bundled in the
+preview image; mount them into `/opt/tika-server/plugins/` if you need them.
+Bundling additional common plugins is planned for `4.0.0-beta-1.0`.
+
 ## Supported Platforms
 
 The Docker images are published as multi-platform images supporting the following architectures:
 
 - `linux/amd64` - 64-bit x86 processors (Intel/AMD)
-- `linux/arm/v7` - 32-bit ARM processors
 - `linux/arm64/v8` - 64-bit ARM processors (Apple Silicon, AWS Graviton, etc.)
 - `linux/s390x` - IBM System z mainframes
+
+NOTE: `linux/arm/v7` was published for 3.x but dropped starting with `4.0.0-alpha-1.0`.
+If you need 32-bit ARM, pin to a 3.x tag. The drop was driven by a qemu/dpkg
+emulation bug that broke font-package installation on the Ubuntu 26.04 base.
 
 Docker will automatically pull the correct image for your platform when you use `docker pull` or `docker run`.
 
