@@ -17,8 +17,10 @@ To install more languages, set the build argument `LANGUAGES` or include your ow
 ## Available Tags
 
 Below are the most recent 3.x series tags:
-- `latest`, `3.3.0.0`: Apache Tika Server 3.3.0.0 (Minimal)
-- `latest-full`, `3.3.0.0-full`: Apache Tika Server 3.3.0.0 (Full)
+- `latest`, `3.3.1.0`: Apache Tika Server 3.3.1.0 (Minimal)
+- `latest-full`, `3.3.1.0-full`: Apache Tika Server 3.3.1.0 (Full)
+- `3.3.1.0`, `3.3.1.0`: Apache Tika Server 3.3.1.0 (Minimal)
+- `3.3.1.0`, `3.3.1.0-full`: Apache Tika Server 3.3.1.0 (Full)
 - `3.3.0.0`, `3.3.0.0`: Apache Tika Server 3.3.0.0 (Minimal)
 - `3.3.0.0`, `3.3.0.0-full`: Apache Tika Server 3.3.0.0 (Full)
 - `3.2.3.0`, `3.2.3.0`: Apache Tika Server 3.2.3.0 (Minimal)
@@ -88,9 +90,13 @@ You can see a full set of tags for historical versions [here](https://hub.docker
 The Docker images are published as multi-platform images supporting the following architectures:
 
 - `linux/amd64` - 64-bit x86 processors (Intel/AMD)
-- `linux/arm/v7` - 32-bit ARM processors
 - `linux/arm64/v8` - 64-bit ARM processors (Apple Silicon, AWS Graviton, etc.)
 - `linux/s390x` - IBM System z mainframes
+
+NOTE: `linux/arm/v7` was published for 3.x up through `3.3.0.0` but dropped
+starting with `3.3.1.0`. If you need 32-bit ARM, pin to `3.3.0.0` or earlier.
+The drop was driven by a qemu/dpkg emulation bug that broke font-package
+installation on the Ubuntu 26.04 base.
 
 Docker will automatically pull the correct image for your platform when you use `docker pull` or `docker run`.
 

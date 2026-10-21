@@ -4,6 +4,13 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
+* 3.3.1.0 (27 May 2026)
+  * First 3.3.1 release
+  * Dropped `linux/arm/v7` from published platforms due to a qemu/dpkg
+    emulation bug on the Ubuntu 26.04 base that broke font-package
+    installation during the multi-arch build. Pin to `3.3.0.0` or earlier
+    if you need 32-bit ARM.
+
 * 3.3.0.0 (23 Mar 2026)
   * First 3.3.0 release
   
