@@ -153,6 +153,29 @@ As of 2.5.0.2, if you'd like to add extra jars from your local `my-jars` directo
 You may want to do this to add optional components, such as the tika-eval metadata filter, or optional
 dependencies such as jai-imageio-jpeg2000 (check license compatibility first!).
 
+### Fonts
+
+Fonts matter only when Tika renders a PDF page (OCR, page images, thumbnails) and the PDF does
+not embed the font it uses; text extraction does not need them. The full image includes
+Liberation for Arial, Times New Roman and Courier New, and IPA and WenQuanYi for Japanese and
+Chinese. To render with other fonts, install them in an image of your own. For example, the
+Microsoft core fonts (Verdana, Georgia, Trebuchet and others), whose license you accept by
+installing them:
+
+```Dockerfile
+FROM apache/tika:3.3.1.0-full
+USER root
+RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true \
+      | debconf-set-selections \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+         ttf-mscorefonts-installer \
+    && rm -rf /var/lib/apt/lists/*
+USER 35002:35002
+```
+
+The installer downloads the fonts from SourceForge, so the build needs network access.
+
 ### Docker Compose Examples
 
 There are a number of sample Docker Compose files included in the repos to allow you to test some different scenarios.
