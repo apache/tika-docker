@@ -4,6 +4,17 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
+* Unreleased
+  * Full image: dropped `ttf-mscorefonts-installer` and `cabextract`. The installer
+    downloaded Microsoft's fonts from SourceForge at build time, and the image
+    redistributed them under Microsoft's EULA. Non-embedded Verdana, Georgia,
+    Trebuchet, Impact, Comic Sans and Arial Black now render with Liberation fonts.
+    See the README for adding them back in your own image (TIKA-5005).
+  * Full image: added `fonts-ipafont-gothic`, `fonts-ipafont-mincho` and
+    `fonts-wqy-zenhei`, so PDF pages in non-embedded Japanese and Chinese fonts render
+    instead of showing empty boxes or nothing (TIKA-5005).
+  * `wget` stays in the full image for healthchecks.
+
 * 3.3.1.0 (27 May 2026)
   * First 3.3.1 release
   * Dropped `linux/arm/v7` from published platforms due to a qemu/dpkg
