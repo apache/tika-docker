@@ -17,6 +17,8 @@ To install more languages, set the build argument `LANGUAGES` or include your ow
 ## Available Tags
 
 Below are the most recent 3.x series tags:
+- `3.3.3.1`, `3.3.3.1`: Apache Tika Server 3.3.3.1 (Minimal)
+- `3.3.3.1`, `3.3.3.1-full`: Apache Tika Server 3.3.3.1 (Full)
 - `3.3.3.0`, `3.3.3.0`: Apache Tika Server 3.3.3.0 (Minimal)
 - `3.3.3.0`, `3.3.3.0-full`: Apache Tika Server 3.3.3.0 (Full)
 - `3.3.1.0`, `3.3.1.0`: Apache Tika Server 3.3.1.0 (Minimal)

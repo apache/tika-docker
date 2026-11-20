@@ -4,6 +4,10 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
+* 3.3.3.1 (20 Nov 2026)
+  * Rebuilt to pick up Ubuntu's OpenJDK 21.0.13.1, which fixes
+    CVE-2026-114938 ("Java4Shell").
+
 * 3.3.3.0 (21 Oct 2026)
   * First 3.3.3 release
   * Rebuilt with Ubuntu's updated `ca-certificates`, which no longer trusts
