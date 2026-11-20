@@ -122,9 +122,9 @@ case "$subcommand" in
     docker buildx create --use --name tika-builder || die "couldn't create builder"
     # Build multi-arch with buildx and push
     docker buildx build --platform linux/arm64/v8,linux/amd64,linux/s390x --output "type=image,push=true" \
-      --tag ${image_name}:latest --tag ${image_name}:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder minimal || stop_and_die "couldn't build multi-arch minimal"
+      --tag ${image_name}:${tika_docker_version} --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder minimal || stop_and_die "couldn't build multi-arch minimal"
     docker buildx build --platform linux/arm64/v8,linux/amd64,linux/s390x --output "type=image,push=true" \
-      --tag ${image_name}:latest-full --tag ${image_name}:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder full || stop_and_die "couldn't build multi-arch full"
+      --tag ${image_name}:${tika_docker_version}-full --build-arg TIKA_VERSION=${tika_version} --no-cache --builder tika-builder full || stop_and_die "couldn't build multi-arch full"
     docker buildx rm tika-builder || die "couldn't stop builder -- make sure to stop the builder manually! "
     ;;
 

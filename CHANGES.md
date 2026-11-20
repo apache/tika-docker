@@ -4,6 +4,13 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
+* 3.3.3.0 (21 Oct 2026)
+  * First 3.3.3 release
+  * Rebuilt with Ubuntu's updated `ca-certificates`, which no longer trusts
+    "emSign ECC Root CA - G3" after the eMudhra intermediate CA key compromise;
+    Java's truststore in the image is regenerated from it.
+  * No longer tagged `latest`/`latest-full`: those track the 4.x images as of 4.1.0.
+
 * 3.3.1.0 (27 May 2026)
   * First 3.3.1 release
   * Dropped `linux/arm/v7` from published platforms due to a qemu/dpkg

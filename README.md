@@ -17,8 +17,8 @@ To install more languages, set the build argument `LANGUAGES` or include your ow
 ## Available Tags
 
 Below are the most recent 3.x series tags:
-- `latest`, `3.3.1.0`: Apache Tika Server 3.3.1.0 (Minimal)
-- `latest-full`, `3.3.1.0-full`: Apache Tika Server 3.3.1.0 (Full)
+- `3.3.3.0`, `3.3.3.0`: Apache Tika Server 3.3.3.0 (Minimal)
+- `3.3.3.0`, `3.3.3.0-full`: Apache Tika Server 3.3.3.0 (Full)
 - `3.3.1.0`, `3.3.1.0`: Apache Tika Server 3.3.1.0 (Minimal)
 - `3.3.1.0`, `3.3.1.0-full`: Apache Tika Server 3.3.1.0 (Full)
 - `3.3.0.0`, `3.3.0.0`: Apache Tika Server 3.3.0.0 (Minimal)
@@ -114,7 +114,7 @@ Then to run the container, execute the following command:
 
 Where <tag> is the DockerHub tag corresponding to the Apache Tika Server version - e.g. 1.23, 1.22, 1.23-full, 1.22-full.
 
-NOTE: The latest and latest-full tags are explicitly set to the latest released version when they are published.
+NOTE: The `latest` and `latest-full` tags track the 4.x images (published from apache/tika) as of 4.1.0; 3.x releases are published under their version tags only.
 
 NOTE: In the example above, we recommend binding the server to localhost because Docker alters iptables and may expose
 your tika-server to the internet.  If you are confident that your tika-server is on an isolated network
