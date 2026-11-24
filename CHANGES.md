@@ -4,7 +4,10 @@ As of 2.5.0.1, we started adding a digit for Docker versions.  Going forward, we
 a four digit version, where the first three are the Tika version and the last one is the docker version.
 As of 2.5.0.2, we started tagging release commits in our github repo.
 
-* Unreleased
+* 3.4.0.0 (24 Nov 2026)
+  * First 3.4.0 release
+  * Images now run OpenJDK 25 (was 21), matching the 4.x images; tika-server 3.4.0
+    requires Java 17.
   * Full image: dropped `ttf-mscorefonts-installer` and `cabextract`. The installer
     downloaded Microsoft's fonts from SourceForge at build time, and the image
     redistributed them under Microsoft's EULA. Non-embedded Verdana, Georgia,

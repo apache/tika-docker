@@ -17,6 +17,8 @@ To install more languages, set the build argument `LANGUAGES` or include your ow
 ## Available Tags
 
 Below are the most recent 3.x series tags:
+- `3.4.0.0`, `3.4.0.0`: Apache Tika Server 3.4.0.0 (Minimal)
+- `3.4.0.0`, `3.4.0.0-full`: Apache Tika Server 3.4.0.0 (Full)
 - `3.3.3.1`, `3.3.3.1`: Apache Tika Server 3.3.3.1 (Minimal)
 - `3.3.3.1`, `3.3.3.1-full`: Apache Tika Server 3.3.3.1 (Full)
 - `3.3.3.0`, `3.3.3.0`: Apache Tika Server 3.3.3.0 (Minimal)
@@ -165,7 +167,7 @@ Microsoft core fonts (Verdana, Georgia, Trebuchet and others), whose license you
 installing them:
 
 ```Dockerfile
-FROM apache/tika:3.3.1.0-full
+FROM apache/tika:3.4.0.0-full
 USER root
 RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true \
       | debconf-set-selections \

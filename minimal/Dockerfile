@@ -53,7 +53,7 @@ RUN set -eux \
 FROM base AS runtime
 # must reference uid_gid
 ARG UID_GID
-ARG JRE='openjdk-21-jre-headless'
+ARG JRE='openjdk-25-jre-headless'
 RUN set -eux \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \

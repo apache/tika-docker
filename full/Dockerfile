@@ -44,7 +44,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y install gnupg2 w
 
 FROM base AS runtime
 ARG UID_GID
-ARG JRE='openjdk-21-jre-headless'
+ARG JRE='openjdk-25-jre-headless'
 ARG LANGUAGES='eng ita fra spa deu jpn'
 RUN set -eux \
     && apt-get update \
